@@ -15,10 +15,7 @@ class Tile {
 
     }
     containsPoint(x, y) {
-        if (this.xe > x > this.x && this.ye > y > this.y)
-            return true;
-        else
-            return false;
+        return this.xe > x > this.x && this.ye > y > this.y;
     }
     draw() {
 
@@ -125,8 +122,7 @@ class RollTile extends Tile {
                 currentPlayer.roll();
             }
         }
-        console.log(rollText);
-        console.log(this.result);
+        rollText.text = "Move pawn by:" + this.result;
     }
     draw() {
 

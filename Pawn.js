@@ -104,10 +104,11 @@ class Pawn {
             return false;
         }
         var nextTileID = this.player.Route[this.routeID + dicesTile.result];
+        var newTile;
         if (nextTileID === endTile) {
-            var newTile = this.player.EndTile;
+            newTile = this.player.EndTile;
         } else {
-            var newTile = board[nextTileID];
+            newTile = board[nextTileID];
         }
         if (newTile === undefined) {
             return false;
@@ -132,6 +133,7 @@ class Pawn {
         } else {
             nextPlayerTurn();
         }
+        rollText.text = "Roll";
         return true;
     }
     getCaptured() {

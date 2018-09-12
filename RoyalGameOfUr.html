@@ -24,8 +24,9 @@
     var players = [];
     var endTile = "end";
     var dicesTile;
+    var rollText = new PIXI.Text('ROLL');
 
-    var filter = new PIXI.filters.ColorMatrixFilter();
+
 
     function sign(valueToGetSign) {
         return typeof valueToGetSign === 'number' ? valueToGetSign ? valueToGetSign < 0 ? -1 : 1 : valueToGetSign === valueToGetSign ? 0 : NaN : NaN;
@@ -58,7 +59,7 @@
 
 
     let app = new PIXI.Application({
-            width: 800,
+            width: 1200,
             height: 426,
             antialiasing: true,
             transparent: true,
@@ -89,7 +90,6 @@
         app.stage.addChild(boardSprite);
         // board.interactive = true;
         // board.on('pointerdown', onClick);
-        var rollText = new PIXI.Text('ROLL');
         rollText.x = 700;
         rollText.y = 200;
         dicesTile = new RollTile(675, 150, 120, 50);
