@@ -22,12 +22,10 @@ class Player {
         this.rolled = true;
         var noMoves = true;
         for (var pawn of this.pawns) {
-            //pawn.draw(null, null);
             if (pawn.canMove) {
                 noMoves = false;
             }
         }
-        console.log(noMoves, this.haveMoves());
 
         if (noMoves) {
             nextPlayerTurn();
@@ -35,41 +33,22 @@ class Player {
 
     }
 
-    haveMoves() {
-        for (var pawn of this.pawns) {
-            if (pawn.canMove) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    redrawPawns() {
-        this.BeginTile.draw();
-        this.EndTile.draw();
-        for (var pawn of this.pawns) {
-            if (pawn.routeID != -1 && pawn.routeID != endTile) {
-                pawn.draw();
-            }
-
-        }
-    }
-
-    ToString() {
-        var text = '';
-        text += this.ID;
-        for (var pawn of this.pawns) {
-            text += pawn.ToString();
-        }
-
-        return text;
-    }
 
     win() {
-        //ctxBoard.fillRect(this.x, this.y, this.width, this.height);
-        //ctxBoard.font = "20px";
-        //ctxBoard.fillText("Gracz " + this.Name + " wygrał.", canvasBoard.width / 2, canvasBoard.height / 2);
-        text1 = game.add.bitmapText(200, 100, 'desyrel', "Gracz " + this.Name + " wygrał.", 64);
+        var style = {
+            font : 'bold italic 36px Arial',
+            fill : '#F7EDCA',
+            stroke : '#4a1850',
+            strokeThickness : 5,
+            dropShadow : true,
+            dropShadowColor : '#000000',
+            dropShadowAngle : Math.PI / 6,
+            dropShadowDistance : 6,
+            wordWrap : true,
+            wordWrapWidth : 440
+        };
+        var winText = new PIXI.Text("Gracz " + this.Name + " wygrał.",style);
+        app.stage.addChild(winText);
         finished = true;
     }
 }
@@ -82,7 +61,7 @@ class ComputerPlayer extends Player {
     startTurn() {
         Player.prototype.startTurn.call(this);
         dicesTile.onClick();
-        if (currentPlayer == this)
+        if (currentPlayer === this)
             this.makeMove();
     }
 

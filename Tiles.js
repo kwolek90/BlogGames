@@ -15,8 +15,8 @@ class Tile {
 
     }
     containsPoint(x, y) {
-        if (x > this.x && x < this.xe && y > this.y && y < this.ye)
-            return true
+        if (this.xe > x > this.x && this.ye > y > this.y)
+            return true;
         else
             return false;
     }
@@ -49,14 +49,9 @@ class RouteTile extends Tile {
         this.isRosette = false;
     }
     draw() {
-        //super.draw();
+        super.draw();
         if (this.pawn != null) {
             this.pawn.draw();
-        }
-    }
-    onClick() {
-        if (this.pawn != null) {
-            var moved = this.pawn.move();
         }
     }
 
@@ -76,21 +71,15 @@ class BeginTile extends RouteTile {
         super(-1, x, y, w, h);
         this.pawns = [];
     }
-    onClick() {
-        if (this.pawns.length > 0 && dicesTile.result > 0) {
-            var pawn = this.getPawn();
-            this.pawns.push(pawn);
-            var moved = pawn.move();
-            if (moved) {
-                this.draw();
-            }
 
+    draw() {
+        for(let i in this.pawns){
+            let pawn = this.pawns[i];
+            pawn.draw(this.x+i*pawn.sprite.height,this.y+this.height /2);
         }
     }
 
-    draw() {
 
-    }
 
     getPawn() {
         return this.pawns.pop();
@@ -111,7 +100,7 @@ class EndTile extends RouteTile {
     }
     setPawn(pawn) {
         this.pawns.push(pawn);
-        if (this.pawns.length == pawnNumber) {
+        if (this.pawns.length === pawnNumber) {
             this.player.win();
         }
     }
@@ -129,13 +118,15 @@ class RollTile extends Tile {
             }
             this.draw();
             currentPlayer.rolled = true;
-            if (this.result == 0) {
+            if (this.result === 0) {
                 nextPlayerTurn();
             }
             else {
                 currentPlayer.roll();
             }
         }
+        console.log(rollText);
+        console.log(this.result);
     }
     draw() {
 
