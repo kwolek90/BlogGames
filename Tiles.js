@@ -95,6 +95,14 @@ class EndTile extends RouteTile {
         this.player = player;
         this.pawns = [];
     }
+    
+    draw() {
+        for(let i in this.pawns){
+            let pawn = this.pawns[i];
+            pawn.draw(this.x+i*pawn.sprite.height,this.y+this.height /2);
+        }
+    }
+
     setPawn(pawn) {
         this.pawns.push(pawn);
         if (this.pawns.length === pawnNumber) {

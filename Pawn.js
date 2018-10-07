@@ -125,6 +125,9 @@ class Pawn {
         this.tile.setPawn(this);
         this.routeID = this.routeID + dicesTile.result;
         this.drawMove(this.tile.xc - this.sprite.width/2,this.tile.yc-this.sprite.height/2);
+        if(this.tile instanceof EndTile){
+            this.tile.draw();
+        }
         for(let pawn of this.player.pawns){
             pawn.hideHighlight();
         }

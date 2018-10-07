@@ -4,8 +4,25 @@
     <!--<script src="http://labs.phaser.io/build/phaser-arcade-physics.min.js"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>-->
     <script src="node_modules/pixi.js/dist/pixi.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
 </head>
 <body>
+
+<div id="ChooseDiv">
+    <select id="player1">
+        <option value="human">Human</option>
+        <option value="computer">Computer</option>
+    </select>
+    <select id="player2">
+        <option value="human">Human</option>
+        <option value="computer">Computer</option>
+    </select>
+    <button onclick="StartGame()">Start</button>
+
+</div>
 
 <script src="Player.js"></script>
 <script src="Pawn.js"></script>
@@ -48,12 +65,6 @@
     function setCurrentPlayer(playerID) {
         currentPlayer = players[playerID];
         currentPlayer.startTurn();
-        //for (var id in img_token) {
-        //    img_token[id].style.border = "none";
-        //}
-
-        //if (playerID in img_token)
-        //    img_token[playerID].style.border = "thick solid #0000FF";
     }
 
 
@@ -68,14 +79,22 @@
     );
     //Add the canvas that Pixi automatically created for you to the HTML document
     document.body.appendChild(app.view);
-    //load an image and run the `setup` function when it's done
-    PIXI.loader
-        .add("dices.png")
-        .add("board.png")
-        .add("white.png")
-        .add("black.png")
-        .load(setup);
-    //This `setup` function will run when the image has loaded
+
+
+    function StartGame(){
+        //load an image and run the `setup` function when it's done
+        //This `setup` function will run when the image has loaded
+
+        $('#ChooseDiv').hide();
+
+        PIXI.loader
+            .add("dices.png")
+            .add("board.png")
+            .add("white.png")
+            .add("black.png")
+            .load(setup);
+    }
+
     function setup() {
         //Create the cat sprite
         //let dices = new PIXI.Sprite(PIXI.loader.resources["dices.png"].texture);
@@ -131,8 +150,12 @@
             tiles.push(tile);
         }
 
-
-        players[0] = new Player(0, 'white');
+        if($("#player1").val() === "human"){
+            players[0] = new Player(0, 'white');
+        }
+        else{
+            players[0] = new ComputerPlayer(0, 'white');
+        }
         players[0].BeginTile = new BeginTile(0, 0, 400, 60);
         players[0].EndTile = new EndTile(400, 0, 400, 60, players[0]);
         players[0].Route = [0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile];
@@ -149,7 +172,12 @@
             players[0].BeginTile.pawns.push(pawn);
         }
 
-        players[1] = new ComputerPlayer(1, 'black');
+        if($("#player2").val() === "human"){
+            players[1] = new Player(1, 'black');
+        }
+        else{
+            players[1] = new ComputerPlayer(1, 'black');
+        }
         players[1].BeginTile = new BeginTile(0, 310, 400, 60);
         players[1].EndTile = new EndTile(400, 310, 400, 60, players[1]);
         players[1].Route = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile];
