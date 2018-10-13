@@ -6,6 +6,9 @@ jobs:
     docker:
     - image: circleci/node:stretch
     steps:
+    - add_ssh_keys:
+        fingerprints:
+          - "cc:70:33:4e:ae:54:1f:2e:0a:e4:bd:70:c3:c3:9f:f5"
     - checkout
     - run: "scp -o StrictHostKeyChecking=no -r circle-pushing/* root@kwolek.nazwa.pl:/var/www/html/games/"
 workflows:
