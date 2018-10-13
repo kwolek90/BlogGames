@@ -1,0 +1,17 @@
+
+version: 2.0
+
+jobs:
+  build:
+    docker:
+    - image: circleci/node:4.8.2-jessie
+    steps:
+    - checkout
+    - run
+      name: Send
+      command: "scp -r circle-pushing/* root@kwolek.nazwa.pl:/var/www/html/games/"
+workflows:
+  version: 2
+  build:
+    jobs:
+    - build
