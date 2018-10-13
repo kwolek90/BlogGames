@@ -4,6 +4,7 @@
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:6.9.4
+version: 2.0
 
 pipelines:
   default:
