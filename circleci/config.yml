@@ -1,15 +1,22 @@
-# This is a sample build configuration for JavaScript.
-# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: node:6.9.4
+
 version: 2.0
 
-pipelines:
-  default:
-    - step:
-        caches:
-          - node
-        script: # Modify the commands below to build your repository.
-          - scp -r circle-pushing/* root@kwolek.nazwa.pl:/var/www/html/games/
+jobs:
+  build:
+    docker:
+    - image: circleci/<language>:<version TAG>
+    steps:
+    - checkout
+    - run: "scp -r circle-pushing/* root@kwolek.nazwa.pl:/var/www/html/games/"
+  test:
+    docker:
+    - image: circleci/<language>:<version TAG>
+    steps:
+    - checkout
+    - run: "echo Hello World"
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+    - build
+    - test
