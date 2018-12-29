@@ -39,11 +39,29 @@ class Pawn {
     drawMove(x, y) {
         if (x == null) { x = this.sprite.x; }
         if (y == null) { y = this.sprite.y; }
+
+
+
         var tx = this.sprite.x;
         var ty = this.sprite.y;
-        if (tx !== x || ty !== y) {
-            this.draw(x, y);
-        }
+
+        var dx = sign(x-tx);
+        var dy = sign(y-ty);
+
+        var i =0;
+        var pawn = this;
+        var interval = setInterval(function(){
+            pawn.draw(tx+dx, ty+dy);
+            tx = pawn.sprite.x;
+            ty = pawn.sprite.y;
+            dx = sign(x-tx);
+            dy = sign(y-ty);
+            i+=1;
+            console.log(i,tx,ty,x,y);
+            if(dx === 0 && dy === 0){
+                clearInterval(interval);
+            }
+        },10);
     }
 
     get canMove(){
@@ -124,7 +142,7 @@ class Pawn {
         this.tile = newTile;
         this.tile.setPawn(this);
         this.routeID = this.routeID + dicesTile.result;
-        this.drawMove(this.tile.xc - this.sprite.width/2,this.tile.yc-this.sprite.height/2);
+        this.drawMove(this.tile.xc - parseInt(this.sprite.width/2),this.tile.yc-parseInt(this.sprite.height/2));
         if(this.tile instanceof EndTile){
             this.tile.draw();
         }

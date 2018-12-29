@@ -8,8 +8,8 @@ class Tile {
         this.y = y;
         this.xe = x + w;
         this.ye = y + h;
-        this.xc = x + w / 2;
-        this.yc = y + h / 2;
+        this.xc = x + parseInt(w / 2);
+        this.yc = y + parseInt(h / 2);
         this.isTile = true;
         this.image = null;
 
