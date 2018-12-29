@@ -1,5 +1,6 @@
 image: alpine:latest
-
+before_script:
+  - apt-get update -qq && apt-get install -y -qq sshpass
 pages:
   stage: deploy
   script:
