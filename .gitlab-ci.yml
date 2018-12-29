@@ -3,7 +3,9 @@ image: alpine:latest
 pages:
   stage: deploy
   script:
-  - echo 'Nothing to do...'
+  - sshpass -V
+  - export SSHPASS=$USER_PASS
+  - sshpass -e scp -o stricthostkeychecking=no -r . root@frytek.warszawa.pl:/var/www/html
   artifacts:
     paths:
     - public
