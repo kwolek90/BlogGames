@@ -48,7 +48,6 @@ class Pawn {
         var dx = sign(x-tx);
         var dy = sign(y-ty);
 
-        var i =0;
         var pawn = this;
         var interval = setInterval(function(){
             pawn.draw(tx+dx, ty+dy);
@@ -56,8 +55,6 @@ class Pawn {
             ty = pawn.sprite.y;
             dx = sign(x-tx);
             dy = sign(y-ty);
-            i+=1;
-            console.log(i,tx,ty,x,y);
             if(dx === 0 && dy === 0){
                 clearInterval(interval);
             }

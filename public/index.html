@@ -67,12 +67,15 @@
     }
 
     function nextPlayerTurn() {
-        var ind = players.indexOf(currentPlayer);
-        var nind = (ind + 1) % players.length;
-        setCurrentPlayer(nind);
+        if(finished === false){
+            var ind = players.indexOf(currentPlayer);
+            var nind = (ind + 1) % players.length;
+            setCurrentPlayer(nind);
+        }
     }
 
     function setCurrentPlayer(playerID) {
+        //console.log(Date.now(),arguments.callee.name,arguments);
         currentPlayer = players[playerID];
         currentPlayer.startTurn();
     }
@@ -212,7 +215,8 @@
             }
         }
 
-        currentPlayer = players[0];
+
+        setCurrentPlayer(0);
 
         function onKeyDown(key) {
             if(key.keyCode === 32){
