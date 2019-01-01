@@ -61,8 +61,15 @@ class ComputerPlayer extends Player {
     startTurn() {
         Player.prototype.startTurn.call(this);
         dicesTile.onClick();
-        if (currentPlayer === this)
-            this.makeMove();
+        if (currentPlayer === this){
+            var cint = setInterval(function () {
+                if(!interactionStoped){
+                    clearInterval(cint);
+                    currentPlayer.makeMove();
+                }
+            },10)
+
+        }
     }
 
     makeMove() {

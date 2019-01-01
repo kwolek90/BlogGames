@@ -49,6 +49,7 @@ class Pawn {
         var dy = sign(y-ty);
 
         var pawn = this;
+        interactionStoped = true;
         var interval = setInterval(function(){
             pawn.draw(tx+dx, ty+dy);
             tx = pawn.sprite.x;
@@ -57,6 +58,7 @@ class Pawn {
             dy = sign(y-ty);
             if(dx === 0 && dy === 0){
                 clearInterval(interval);
+                interactionStoped = false;
             }
         },10);
     }
@@ -108,6 +110,7 @@ class Pawn {
         }
         return true;
     }
+
     move() {
         if (this.player.ID !== currentPlayer.ID) {
             return false;
