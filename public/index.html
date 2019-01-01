@@ -214,6 +214,15 @@
 
         currentPlayer = players[0];
 
+        function onKeyDown(key) {
+            if(key.keyCode === 32){
+                dicesTile.onClick();
+            }
+
+        }
+
+        document.addEventListener('keydown', onKeyDown);
+
     }
 
 </script>
