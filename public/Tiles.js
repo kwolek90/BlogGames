@@ -23,6 +23,7 @@ class Tile {
     onClick() {
 
     }
+
 }
 
 class NewGameTile extends Tile {
@@ -83,7 +84,7 @@ class BeginTile extends RouteTile {
     }
 
     setPawn(pawn) {
-        pawn.i = -1;
+        pawn.routeID = -1;
         this.pawns.push(pawn);
     }
 }

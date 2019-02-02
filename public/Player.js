@@ -60,14 +60,14 @@ class ComputerPlayer extends Player {
 
     startTurn() {
         Player.prototype.startTurn.call(this);
-        dicesTile.onClick();
         if (currentPlayer === this){
             var cint = setInterval(function () {
-                if(!interactionStoped){
+                if(!animationQueue.isBusy){
                     clearInterval(cint);
+                    dicesTile.onClick();
                     currentPlayer.makeMove();
                 }
-            },10)
+            },50)
 
         }
     }

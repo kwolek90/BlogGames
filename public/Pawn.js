@@ -2,7 +2,7 @@
 
 
 class Pawn {
-    constructor(player,sprite) {
+    constructor(player,sprite,board) {
         this.player = player;
         this.tile = null;
         this.routeID = -1;
@@ -14,6 +14,7 @@ class Pawn {
         this.highlight =  new PIXI.Graphics();
         this.highlight.lineStyle(10, 0xFF0000);
         this.highlight.drawCircle(0, 0, 20);
+        this.board = board;
         app.stage.addChild((this.highlight));
         this.hideHighlight();
     }
@@ -36,11 +37,28 @@ class Pawn {
 
     }
 
-    drawMove(x, y) {
+    drawPawnMove(destinationTileID){
+        var pawn = this;
+        if(this.routeID !== destinationTileID){
+            this.routeID = this.routeID + 1;
+            let tileID = this.player.Route[this.routeID];
+            let tile = this.board[tileID];
+            if(tileID === endTile){
+                tile = this.player.EndTile;
+            }
+            this.drawSimpleMove(tile.xc,tile.yc, function(){pawn.drawPawnMove(destinationTileID)});
+        }
+        else{
+            return;
+        }
+
+
+    }
+
+    drawSimpleMove(x, y, callback) {
+        var pawn = this;
         if (x == null) { x = this.sprite.x; }
         if (y == null) { y = this.sprite.y; }
-
-
 
         var tx = this.sprite.x;
         var ty = this.sprite.y;
@@ -48,19 +66,14 @@ class Pawn {
         var dx = sign(x-tx);
         var dy = sign(y-ty);
 
-        var pawn = this;
-        interactionStoped = true;
-        var interval = setInterval(function(){
+        if(dx !== 0 || dy !== 0){
             pawn.draw(tx+dx, ty+dy);
-            tx = pawn.sprite.x;
-            ty = pawn.sprite.y;
-            dx = sign(x-tx);
-            dy = sign(y-ty);
-            if(dx === 0 && dy === 0){
-                clearInterval(interval);
-                interactionStoped = false;
-            }
-        },10);
+            animationQueue.append(10,function(){ pawn.drawSimpleMove(x,y,callback);});
+        }
+        else{
+            callback();
+        }
+
     }
 
     get canMove(){
@@ -141,8 +154,11 @@ class Pawn {
         this.tile.getPawn();
         this.tile = newTile;
         this.tile.setPawn(this);
-        this.routeID = this.routeID + dicesTile.result;
-        this.drawMove(this.tile.xc - parseInt(this.sprite.width/2),this.tile.yc-parseInt(this.sprite.height/2));
+
+        //this.drawMove(this.tile.xc - parseInt(this.sprite.width/2),this.tile.yc-parseInt(this.sprite.height/2));
+
+        this.drawPawnMove(this.routeID + dicesTile.result);
+
         if(this.tile instanceof EndTile){
             this.tile.draw();
         }

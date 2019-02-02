@@ -14,13 +14,13 @@
 <div id="ChooseDiv">
     <label>Pierwszy gracz: </label>
     <select id="player1">
-        <option value="human">Human</option>
         <option value="computer">Computer</option>
+        <option value="human">Human</option>
     </select>
     <label>Drugi gracz: </label>
     <select id="player2">
-        <option value="human">Human</option>
         <option value="computer">Computer</option>
+        <option value="human">Human</option>
     </select>
     <button onclick="StartGame()">Start</button>
 
@@ -30,6 +30,35 @@
 <script src="Pawn.js"></script>
 <script src="Tiles.js"></script>
 <script>
+
+    class AnimationQueue{
+        constructor(){
+            this.queue = [];
+            this.isBusy = false;
+
+            //this.next();
+        }
+
+        static next(){
+            let delay = 100;
+            if(animationQueue.queue.length > 0){
+                let operation_and_delay = animationQueue.queue.shift();
+                let operation = operation_and_delay[0];
+                delay = operation_and_delay[1];
+                operation();
+            }
+            else{
+                animationQueue.isBusy = false;
+            }
+            setTimeout(animationQueue.next, delay);
+
+        }
+
+        append(ms,callback){
+            this.isBusy = true;
+            this.queue.push([callback,ms]);
+        }
+    }
 
     class Game{
 
@@ -46,12 +75,15 @@
     var tile_size = 65;
     var pawnNumber = 7;
     var finished = false;
-    var interactionStoped = false;
     var currentPlayer;
     var players = [];
     var endTile = "end";
     var dicesTile;
     var rollText = new PIXI.Text('ROLL');
+
+
+    var animationQueue = new AnimationQueue();
+    animationQueue.next();
 
 
 
@@ -121,8 +153,6 @@
 
 
         app.stage.addChild(boardSprite);
-        // board.interactive = true;
-        // board.on('pointerdown', onClick);
         rollText.x = 700;
         rollText.y = 200;
         dicesTile = new RollTile(675, 150, 120, 50);
@@ -180,7 +210,7 @@
             sprite.x = 22 + i * 44;
             sprite.y = whiteLine;
             app.stage.addChild(sprite);
-            let pawn = new Pawn(players[0], sprite);
+            let pawn = new Pawn(players[0], sprite,board);
             pawn.tile = players[0].BeginTile;
             players[0].pawns.push(pawn);
             players[0].BeginTile.pawns.push(pawn);
@@ -202,7 +232,7 @@
             sprite.x = 22 + i * 44;
             sprite.y = blackLine;
             app.stage.addChild(sprite);
-            let pawn = new Pawn(players[1], sprite);
+            let pawn = new Pawn(players[1], sprite,board);
             pawn.tile = players[1].BeginTile;
             players[1].pawns.push(pawn);
             players[1].BeginTile.pawns.push(pawn);
