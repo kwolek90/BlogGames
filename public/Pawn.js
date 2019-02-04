@@ -68,7 +68,7 @@ class Pawn {
 
         if(dx !== 0 || dy !== 0){
             pawn.draw(tx+dx, ty+dy);
-            animationQueue.append(10,function(){ pawn.drawSimpleMove(x,y,callback);});
+            AnimationQueue.append(10,function(){ pawn.drawSimpleMove(x,y,callback);});
         }
         else{
             callback();

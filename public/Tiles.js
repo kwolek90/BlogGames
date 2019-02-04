@@ -118,8 +118,8 @@ class RollTile extends Tile {
         this.roll = [false, false, false, false];
     }
     onClick() {
-        if (!currentPlayer.rolled) {
-            for (var i in this.roll) {
+        if (!currentPlayer.rolled && !AnimationQueue.isBusy) {
+            for (let i in this.roll) {
                 this.roll[i] = Math.random() < 0.5;
             }
             this.draw();
@@ -130,8 +130,9 @@ class RollTile extends Tile {
             else {
                 currentPlayer.roll();
             }
+
+            rollText.text = "Move pawn by:" + this.result;
         }
-        rollText.text = "Move pawn by:" + this.result;
     }
     draw() {
 

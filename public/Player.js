@@ -6,11 +6,10 @@ class Player {
         this.pawns = [];
         this.rolled = false;
         this.made_move = false;
-        this.BeginTile;
-        this.EndTile;
-        this.Name = this.ID;
+        this.BeginTile = undefined;
+        this.EndTile = undefined;
+        this.Name = image;
         this.Route = [];
-        this.PawnImage = image;
     }
 
     startTurn() {
@@ -62,7 +61,7 @@ class ComputerPlayer extends Player {
         Player.prototype.startTurn.call(this);
         if (currentPlayer === this){
             var cint = setInterval(function () {
-                if(!animationQueue.isBusy){
+                if(!AnimationQueue.isBusy){
                     clearInterval(cint);
                     dicesTile.onClick();
                     currentPlayer.makeMove();

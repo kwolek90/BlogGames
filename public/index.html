@@ -13,12 +13,12 @@
 
 <div id="ChooseDiv">
     <label>Pierwszy gracz: </label>
-    <select id="player1">
+    <select id="player1" title="Pierwszy gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
     </select>
     <label>Drugi gracz: </label>
-    <select id="player2">
+    <select id="player2" title="Drugi gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
     </select>
@@ -31,34 +31,28 @@
 <script src="Tiles.js"></script>
 <script>
 
-    class AnimationQueue{
-        constructor(){
-            this.queue = [];
-            this.isBusy = false;
-
-            //this.next();
-        }
-
-        static next(){
+    var AnimationQueue = {
+        queue:[],
+        isBusy: false,
+        next:function(){
             let delay = 100;
-            if(animationQueue.queue.length > 0){
-                let operation_and_delay = animationQueue.queue.shift();
+            if(AnimationQueue.queue.length > 0){
+                let operation_and_delay = AnimationQueue.queue.shift();
                 let operation = operation_and_delay[0];
                 delay = operation_and_delay[1];
                 operation();
             }
             else{
-                animationQueue.isBusy = false;
+                AnimationQueue.isBusy = false;
             }
-            setTimeout(animationQueue.next, delay);
+            setTimeout(AnimationQueue.next, delay);
 
+        },
+        append:function(ms,callback){
+            AnimationQueue.isBusy = true;
+            AnimationQueue.queue.push([callback,ms]);
         }
-
-        append(ms,callback){
-            this.isBusy = true;
-            this.queue.push([callback,ms]);
-        }
-    }
+    };
 
     class Game{
 
@@ -82,8 +76,6 @@
     var rollText = new PIXI.Text('ROLL');
 
 
-    var animationQueue = new AnimationQueue();
-    animationQueue.next();
 
 
 
@@ -131,6 +123,7 @@
         //load an image and run the `setup` function when it's done
         //This `setup` function will run when the image has loaded
 
+        AnimationQueue.next();
         $('#ChooseDiv').hide();
 
         PIXI.loader
