@@ -6,7 +6,7 @@ pages:
   script:
   - sshpass -V
   - export SSHPASS=$USER_PASS
-  - sshpass -e scp -o stricthostkeychecking=no -r . root@frytek.warszawa.pl:~/BlogGames
+  - sshpass -e scp -o stricthostkeychecking=no -r . root@frytek.warszawa.pl:/var/www/html/BlogGames
   artifacts:
     paths:
     - public
