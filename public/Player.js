@@ -10,11 +10,21 @@ class Player {
         this.EndTile = undefined;
         this.Name = image;
         this.Route = [];
+        this.autoroll = false;
     }
 
     startTurn() {
         this.rolled = false;
         this.made_move = false;
+        if (this.autoroll){
+            var cint = setInterval(function () {
+                if(!AnimationQueue.isBusy){
+                    clearInterval(cint);
+                    dicesTile.onClick();
+                    currentPlayer.makeMove();
+                }
+            },50)
+        }
     }
 
     roll() {
@@ -34,7 +44,7 @@ class Player {
 
 
     win() {
-        var style = {
+        let style = {
             font : 'bold italic 36px Arial',
             fill : '#F7EDCA',
             stroke : '#4a1850',
@@ -55,20 +65,12 @@ class Player {
 class ComputerPlayer extends Player {
     constructor(id, image) {
         super(id, image);
+        this.autoroll = true;
     }
 
     startTurn() {
         Player.prototype.startTurn.call(this);
-        if (currentPlayer === this){
-            var cint = setInterval(function () {
-                if(!AnimationQueue.isBusy){
-                    clearInterval(cint);
-                    dicesTile.onClick();
-                    currentPlayer.makeMove();
-                }
-            },50)
 
-        }
     }
 
     makeMove() {

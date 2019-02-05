@@ -48,11 +48,6 @@ class Pawn {
             }
             this.drawSimpleMove(tile.xc,tile.yc, function(){pawn.drawPawnMove(destinationTileID)});
         }
-        else{
-            return;
-        }
-
-
     }
 
     drawSimpleMove(x, y, callback) {
@@ -71,7 +66,7 @@ class Pawn {
             AnimationQueue.append(10,function(){ pawn.drawSimpleMove(x,y,callback);});
         }
         else{
-            callback();
+            AnimationQueue.append(100,callback);
         }
 
     }
