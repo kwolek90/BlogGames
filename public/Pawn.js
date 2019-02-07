@@ -38,8 +38,15 @@ class Pawn {
     }
 
     drawPawnMove(destinationTileID){
-        var pawn = this;
+        let pawn = this;
         if(this.routeID !== destinationTileID){
+            if( this.routeID == -1 ){
+                let exitCoords = this.player.BeginTile.getExit();
+                if(pawn.sprite.x !== exitCoords[0] || pawn.sprite.y !== exitCoords[1]){
+                    this.drawSimpleMove(exitCoords[0],exitCoords[1], function(){pawn.drawPawnMove(destinationTileID)});
+                    return;
+                }
+            }
             this.routeID = this.routeID + 1;
             let tileID = this.player.Route[this.routeID];
             let tile = this.board[tileID];
@@ -51,15 +58,15 @@ class Pawn {
     }
 
     drawSimpleMove(x, y, callback) {
-        var pawn = this;
+        let pawn = this;
         if (x == null) { x = this.sprite.x; }
         if (y == null) { y = this.sprite.y; }
 
-        var tx = this.sprite.x;
-        var ty = this.sprite.y;
+        let tx = this.sprite.x;
+        let ty = this.sprite.y;
 
-        var dx = sign(x-tx);
-        var dy = sign(y-ty);
+        let dx = sign(x-tx);
+        let dy = sign(y-ty);
 
         if(dx !== 0 || dy !== 0){
             pawn.draw(tx+dx, ty+dy);
@@ -150,13 +157,9 @@ class Pawn {
         this.tile = newTile;
         this.tile.setPawn(this);
 
-        //this.drawMove(this.tile.xc - parseInt(this.sprite.width/2),this.tile.yc-parseInt(this.sprite.height/2));
 
         this.drawPawnMove(this.routeID + dicesTile.result);
 
-        if(this.tile instanceof EndTile){
-            this.tile.draw();
-        }
         for(let pawn of this.player.pawns){
             pawn.hideHighlight();
         }
@@ -172,7 +175,6 @@ class Pawn {
         this.tile = this.player.BeginTile;
         this.routeID = -1;
         this.tile.setPawn(this);
-        this.tile.draw();
     }
 
     ToString() {

@@ -71,10 +71,7 @@ class BeginTile extends RouteTile {
     }
 
     draw() {
-        for(let i in this.pawns){
-            let pawn = this.pawns[i];
-            pawn.draw(this.x+i*pawn.sprite.height,this.y+this.height /2);
-        }
+
     }
 
 
@@ -85,7 +82,15 @@ class BeginTile extends RouteTile {
 
     setPawn(pawn) {
         pawn.routeID = -1;
+        let i = this.pawns.length;
+        pawn.sprite.x = this.x+i*pawn.sprite.height;
+        pawn.sprite.y = this.y+this.height /2;
         this.pawns.push(pawn);
+
+    }
+
+    getExit(){
+        return [this.x+this.width-60,this.y+this.height-60]
     }
 }
 
@@ -106,7 +111,7 @@ class EndTile extends RouteTile {
 
     setPawn(pawn) {
         this.pawns.push(pawn);
-        if (this.pawns.length === pawnNumber) {
+        if (this.pawns.length === this.player.pawns.length) {
             this.player.win();
         }
     }
@@ -119,8 +124,19 @@ class RollTile extends Tile {
     }
     onClick() {
         if (!currentPlayer.rolled && !AnimationQueue.isBusy) {
-            for (let i in this.roll) {
-                this.roll[i] = Math.random() < 0.5;
+            let debugResult = $('input[name="diceResult"]:checked').val();
+            if(debugResult == "Roll"){
+                for (let i in this.roll) {
+                    this.roll[i] = Math.random() < 0.5;
+                }
+            }
+            else{
+                for (let i in this.roll) {
+                    this.roll[i] = false;
+                }
+                for (let i = 0; i < debugResult; i += 1) {
+                    this.roll[i] = true;
+                }
             }
             this.draw();
             currentPlayer.rolled = true;
@@ -138,8 +154,8 @@ class RollTile extends Tile {
 
     }
     get result() {
-        var r = 0;
-        for (var i of this.roll) {
+        let r = 0;
+        for (let i of this.roll) {
             if (i) {
                 r += 1;
             }

@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--<script src="http://labs.phaser.io/build/phaser-arcade-physics.min.js"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.2/pixi.js"></script>
     <script
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 
 <div id="ChooseDiv">
-    <label>Pierwszy gracz: </label>
-    <select id="player1" title="Pierwszy gracz">
+    <label>Biały gracz: </label>
+    <select id="player1" title="Biały gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
     </select>
     <label>Drugi gracz: </label>
-    <select id="player2" title="Drugi gracz">
+    <select id="player2" title="Czarny gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
     </select>
+
+
+    <select id="PawnsNumber"></select>
+
     <button onclick="StartGame()">Start</button>
 
+</div>
+
+<div id="DebugDiv" style="display: none">
+
+    <div id="WhitePawnPosition"></div>
+    <div id="BlackPawnPosition"></div>
+
+    <div id="RollResult"></div>
 </div>
 
 <script src="Player.js"></script>
 <script src="Pawn.js"></script>
 <script src="Tiles.js"></script>
 <script>
+
+    $(document).ready(function () {
+
+        for(let i = 1; i<=10; i += 1){
+            $('#PawnsNumber').append("<option value=\""+i+"\">"+i+"</option>");
+        }
+
+        let rollResult = $('#RollResult');
+        rollResult.append("<input type='radio' name='diceResult' value='Roll' checked>Roll</input>");
+        for(let i = 1; i<=4; i += 1){
+            rollResult.append("<input type='radio' name='diceResult' value=\""+i+"\">"+i+"</input>");
+        }
+
+
+    })
 
     var AnimationQueue = {
         queue:[],
@@ -125,6 +151,9 @@
 
         AnimationQueue.next();
         $('#ChooseDiv').hide();
+        $('#DebugDiv').show();
+
+        pawnNumber = $('#PawnsNumber').val();
 
         PIXI.loader
             .add("dices.png")
