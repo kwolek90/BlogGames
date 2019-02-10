@@ -28,6 +28,16 @@
     <button onclick="StartGame()">Start</button>
 
 </div>
+<div id="SettingsDiv" style="display: none">
+    <div id="AutoRollPlayer1Div" style="display: none">
+        <label for="AutoRollPlayer1">Autoroll dla gracza białego</label>
+        <input type="checkbox" id="AutoRollPlayer1" onchange="onAutoRollChange(this,0)">
+    </div>
+    <div id="AutoRollPlayer2Div" style="display: none">
+        <label for="AutoRollPlayer2">Autoroll dla gracza czarnego</label>
+        <input type="checkbox" id="AutoRollPlayer2" onchange="onAutoRollChange(this,1)">
+    </div>
+</div>
 
 <div id="DebugDiv" style="display: none">
 
@@ -35,6 +45,11 @@
     <div id="BlackPawnPosition"></div>
 
     <div id="RollResult"></div>
+
+    <div id="PawnPositionDiv">
+        <div id="Player1PawnsDiv"></div>
+        <div id="Player2PawnsDiv"></div>
+    </div>
 </div>
 
 <script src="Player.js"></script>
@@ -72,7 +87,9 @@
                 let operation_and_delay = AnimationQueue.queue.shift();
                 let operation = operation_and_delay[0];
                 delay = operation_and_delay[1];
-                operation();
+                if(typeof operation == "function"){
+                    operation();
+                }
             }
             else{
                 AnimationQueue.isBusy = false;
@@ -129,14 +146,19 @@
             var nind = (ind + 1) % players.length;
             setCurrentPlayer(nind);
         }
+
+        // players[0].writePawnsPosition("Player1PawnsDiv");
+        // players[1].writePawnsPosition("Player2PawnsDiv");
     }
 
     function setCurrentPlayer(playerID) {
-        //console.log(Date.now(),arguments.callee.name,arguments);
         currentPlayer = players[playerID];
         currentPlayer.startTurn();
     }
 
+    function onAutoRollChange(e,id){
+        players[id].autoroll = e.checked;
+    }
 
 
     let app = new PIXI.Application({
@@ -229,6 +251,7 @@
 
         if($("#player1").val() === "human"){
             players[0] = new Player(0, 'Biały');
+            $("#AutoRollPlayer1Div").show();
         }
         else{
             players[0] = new ComputerPlayer(0, 'Biały');
@@ -252,6 +275,7 @@
 
         if($("#player2").val() === "human"){
             players[1] = new Player(1, 'Czarny');
+            $("#AutoRollPlayer2Div").show();
         }
         else{
             players[1] = new ComputerPlayer(1, 'Czarny');

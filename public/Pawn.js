@@ -43,7 +43,7 @@ class Pawn {
     drawPawnMove(destinationTileID){
         let pawn = this;
         if(this.routeID !== destinationTileID){
-            if( this.routeID == -1 ){
+            if( this.routeID === -1 ){
                 let exitCoords = this.player.BeginTile.getExit();
                 if(pawn.sprite.x !== exitCoords[0] || pawn.sprite.y !== exitCoords[1]){
                     this.drawSimpleMove(exitCoords[0],exitCoords[1], function(){pawn.drawPawnMove(destinationTileID)});
@@ -140,8 +140,8 @@ class Pawn {
         if (this.player.Route[this.routeID] === endTile) {
             return false;
         }
-        var nextTileID = this.player.Route[this.routeID + dicesTile.result];
-        var newTile;
+        let nextTileID = this.player.Route[this.routeID + dicesTile.result];
+        let newTile;
         if (nextTileID === endTile) {
             newTile = this.player.EndTile;
         } else {
@@ -179,9 +179,12 @@ class Pawn {
         this.tile = this.player.BeginTile;
         this.routeID = -1;
         this.tile.setPawn(this);
+        this.tile.setPawnDestination(this);
+        this.drawSimpleMove(this.destinationX,this.destinationY);
+
     }
 
-    ToString() {
+    toString() {
         return this.routeID;
     }
 }

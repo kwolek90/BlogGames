@@ -59,6 +59,14 @@ class Player {
         app.stage.addChild(winText);
         finished = true;
     }
+
+    writePawnsPosition(id){
+        let container = $("#"+id);
+        container.empty();
+        for(let i in this.pawns){
+            container.append("<div>"+this.Name+" "+i+" "+this.pawns[i].routeID+"</div>");
+        }
+    }
 }
 
 class ComputerPlayer extends Player {

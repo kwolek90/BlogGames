@@ -55,7 +55,7 @@ class RouteTile extends Tile {
     }
 
     getPawn() {
-        var pawn = this.pawn;
+        let pawn = this.pawn;
         this.pawn = null;
         return pawn;
     }
@@ -133,7 +133,7 @@ class RollTile extends Tile {
     onClick() {
         if (!currentPlayer.rolled && !AnimationQueue.isBusy) {
             let debugResult = $('input[name="diceResult"]:checked').val();
-            if(debugResult == "Roll"){
+            if(debugResult === "Roll"){
                 for (let i in this.roll) {
                     this.roll[i] = Math.random() < 0.5;
                 }
