@@ -17,6 +17,9 @@ class Pawn {
         this.board = board;
         app.stage.addChild((this.highlight));
         this.hideHighlight();
+
+        this.destinationX = sprite.x;
+        this.destinationY = sprite.y;
     }
     
 
@@ -53,7 +56,8 @@ class Pawn {
             if(tileID === endTile){
                 tile = this.player.EndTile;
             }
-            this.drawSimpleMove(tile.xc,tile.yc, function(){pawn.drawPawnMove(destinationTileID)});
+            tile.setPawnDestination(this);
+            this.drawSimpleMove(this.destinationX,this.destinationY, function(){pawn.drawPawnMove(destinationTileID)});
         }
     }
 
@@ -70,10 +74,10 @@ class Pawn {
 
         if(dx !== 0 || dy !== 0){
             pawn.draw(tx+dx, ty+dy);
-            AnimationQueue.append(10,function(){ pawn.drawSimpleMove(x,y,callback);});
+            AnimationQueue.append(1,function(){ pawn.drawSimpleMove(x,y,callback);});
         }
         else{
-            AnimationQueue.append(100,callback);
+            AnimationQueue.append(200,callback);
         }
 
     }

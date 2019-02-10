@@ -18,7 +18,12 @@ class Tile {
         return this.xe > x > this.x && this.ye > y > this.y;
     }
     draw() {
-
+        let graphics = new PIXI.Graphics();
+        graphics.beginFill(0xFFFF00);
+        graphics.lineStyle(5, 0xFF0000);
+        graphics.drawRect(this.x, this.y, this.width, this.height);
+        app.stage.addChild(graphics);
+        console.log(this.x,this.y,this.width,this.height);
     }
     onClick() {
 
@@ -40,17 +45,13 @@ class NewGameTile extends Tile {
 }
 
 class RouteTile extends Tile {
-    constructor(i, x, y, w, h) {
+    constructor(x, y, w, h) {
         super(x, y, w, h);
-        this.i = i;
         this.pawn = null;
         this.isRosette = false;
     }
     draw() {
         super.draw();
-        if (this.pawn != null) {
-            this.pawn.draw();
-        }
     }
 
     getPawn() {
@@ -62,19 +63,18 @@ class RouteTile extends Tile {
     setPawn(pawn) {
         this.pawn = pawn;
     }
+
+    setPawnDestination(pawn){
+        pawn.destinationX = this.xc - pawn.sprite.width/2;
+        pawn.destinationY = this.yc - pawn.sprite.height/2;
+    }
 }
 
 class BeginTile extends RouteTile {
     constructor(x, y, w, h) {
-        super(-1, x, y, w, h);
+        super(x, y, w, h);
         this.pawns = [];
     }
-
-    draw() {
-
-    }
-
-
 
     getPawn() {
         return this.pawns.pop();
@@ -82,11 +82,17 @@ class BeginTile extends RouteTile {
 
     setPawn(pawn) {
         pawn.routeID = -1;
-        let i = this.pawns.length;
-        pawn.sprite.x = this.x+i*pawn.sprite.height;
-        pawn.sprite.y = this.y+this.height /2;
         this.pawns.push(pawn);
 
+    }
+    setPawnDestination(pawn){
+        let xb = this.x+pawn.sprite.width/2;
+        let xe = this.xe-pawn.sprite.width;
+        let yb = this.y+pawn.sprite.height/2;
+        let ye = this.ye-pawn.sprite.height;
+
+        pawn.destinationX = getRandomInt(xb,xe);
+        pawn.destinationY = getRandomInt(yb,ye);
     }
 
     getExit(){
@@ -97,16 +103,9 @@ class BeginTile extends RouteTile {
 
 class EndTile extends RouteTile {
     constructor(x, y, w, h, player) {
-        super(21, x, y, w, h);
+        super(x, y, w, h);
         this.player = player;
         this.pawns = [];
-    }
-    
-    draw() {
-        for(let i in this.pawns){
-            let pawn = this.pawns[i];
-            pawn.draw(this.x+i*pawn.sprite.height,this.y+this.height /2);
-        }
     }
 
     setPawn(pawn) {
@@ -114,6 +113,15 @@ class EndTile extends RouteTile {
         if (this.pawns.length === this.player.pawns.length) {
             this.player.win();
         }
+    }
+    setPawnDestination(pawn){
+        let xb = this.x+pawn.sprite.width/2;
+        let xe = this.xe-pawn.sprite.width;
+        let yb = this.y+pawn.sprite.height/2;
+        let ye = this.ye-pawn.sprite.height;
+
+        pawn.destinationX = getRandomInt(xb,xe);
+        pawn.destinationY = getRandomInt(yb,ye);
     }
 }
 

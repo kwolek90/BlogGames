@@ -21,7 +21,6 @@ class Player {
                 if(!AnimationQueue.isBusy){
                     clearInterval(cint);
                     dicesTile.onClick();
-                    currentPlayer.makeMove();
                 }
             },50)
         }
@@ -69,7 +68,17 @@ class ComputerPlayer extends Player {
     }
 
     startTurn() {
-        Player.prototype.startTurn.call(this);
+        this.rolled = false;
+        this.made_move = false;
+        if (this.autoroll){
+            var cint = setInterval(function () {
+                if(!AnimationQueue.isBusy){
+                    clearInterval(cint);
+                    dicesTile.onClick();
+                    currentPlayer.makeMove();
+                }
+            },50)
+        }
 
     }
 

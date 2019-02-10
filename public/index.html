@@ -11,12 +11,12 @@
 <body>
 
 <div id="ChooseDiv">
-    <label>Biały gracz: </label>
+    <label for="player1">Biały gracz: </label>
     <select id="player1" title="Biały gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
     </select>
-    <label>Drugi gracz: </label>
+    <label for="player2">Drugi gracz: </label>
     <select id="player2" title="Czarny gracz">
         <option value="computer">Computer</option>
         <option value="human">Human</option>
@@ -44,7 +44,7 @@
 
     $(document).ready(function () {
 
-        for(let i = 1; i<=10; i += 1){
+        for(let i = 1; i<=100; i += 1){
             $('#PawnsNumber').append("<option value=\""+i+"\">"+i+"</option>");
         }
 
@@ -56,6 +56,12 @@
 
 
     })
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     var AnimationQueue = {
         queue:[],
@@ -135,7 +141,7 @@
 
     let app = new PIXI.Application({
             width: 1200,
-            height: 426,
+            height: 800,
             antialiasing: true,
             transparent: true,
             resolution: 1
@@ -152,6 +158,7 @@
         AnimationQueue.next();
         $('#ChooseDiv').hide();
         $('#DebugDiv').show();
+        $('#SettingsDiv').show();
 
         pawnNumber = $('#PawnsNumber').val();
 
@@ -163,14 +170,17 @@
             .load(setup);
     }
 
+    function createRouteTile(boardSprite,board,i,x,y,tile_size){
+        board[i] = new RouteTile(boardSprite.position.x + x, boardSprite.position.y + y, tile_size, tile_size);
+    }
+
     function setup() {
-        //Create the cat sprite
-        //let dices = new PIXI.Sprite(PIXI.loader.resources["dices.png"].texture);
+
         let boardSprite = new PIXI.Sprite(PIXI.loader.resources["board.png"].texture);
         boardSprite.position.x = 0;
-        boardSprite.position.y = 70;
-        var white = PIXI.Texture.fromImage("white.png");
-        var black = PIXI.Texture.fromImage("black.png");
+        boardSprite.position.y = 100;
+        let white = PIXI.Texture.fromImage("white.png");
+        let black = PIXI.Texture.fromImage("black.png");
 
 
 
@@ -185,26 +195,27 @@
         board = [];
         tiles = [];
 
-        board[0] = new RouteTile(0, 254, 75, tile_size, tile_size);
-        board[1] = new RouteTile(1, 180, 75, tile_size, tile_size);
-        board[2] = new RouteTile(2, 103, 75, tile_size, tile_size);
-        board[3] = new RouteTile(3, 23, 75, tile_size, tile_size);
-        board[4] = new RouteTile(0, 254, 229, tile_size, tile_size);
-        board[5] = new RouteTile(1, 180, 229, tile_size, tile_size);
-        board[6] = new RouteTile(2, 103, 229, tile_size, tile_size);
-        board[7] = new RouteTile(3, 23, 229, tile_size, tile_size);
-        board[8] = new RouteTile(4, 23, 153, tile_size, tile_size);
-        board[9] = new RouteTile(5, 103, 153, tile_size, tile_size);
-        board[10] = new RouteTile(6, 180, 153, tile_size, tile_size);
-        board[11] = new RouteTile(7, 254, 153, tile_size, tile_size);
-        board[12] = new RouteTile(8, 330, 153, tile_size, tile_size);
-        board[13] = new RouteTile(9, 405, 153, tile_size, tile_size);
-        board[14] = new RouteTile(10, 485, 153, tile_size, tile_size);
-        board[15] = new RouteTile(11, 560, 153, tile_size, tile_size);
-        board[16] = new RouteTile(12, 560, 75, tile_size, tile_size);
-        board[17] = new RouteTile(13, 485, 75, tile_size, tile_size);
-        board[18] = new RouteTile(12, 560, 229, tile_size, tile_size);
-        board[19] = new RouteTile(13, 485, 229, tile_size, tile_size);
+
+        createRouteTile(boardSprite,board,0, 254, 5, tile_size);
+        createRouteTile(boardSprite,board,1, 180, 5, tile_size);
+        createRouteTile(boardSprite,board,2, 103, 5, tile_size);
+        createRouteTile(boardSprite,board,3, 23, 5, tile_size);
+        createRouteTile(boardSprite,board,4, 254, 159, tile_size);
+        createRouteTile(boardSprite,board,5, 180, 159, tile_size);
+        createRouteTile(boardSprite,board,6, 103, 159, tile_size);
+        createRouteTile(boardSprite,board,7, 23, 159, tile_size);
+        createRouteTile(boardSprite,board,8, 23, 83, tile_size);
+        createRouteTile(boardSprite,board,9, 103, 83, tile_size);
+        createRouteTile(boardSprite,board,10, 180, 83, tile_size);
+        createRouteTile(boardSprite,board,11, 254, 83, tile_size);
+        createRouteTile(boardSprite,board,12, 330, 83, tile_size);
+        createRouteTile(boardSprite,board,13, 405, 83, tile_size);
+        createRouteTile(boardSprite,board,14, 485, 83, tile_size);
+        createRouteTile(boardSprite,board,15, 560, 83, tile_size);
+        createRouteTile(boardSprite,board,16, 560, 5, tile_size);
+        createRouteTile(boardSprite,board,17, 485, 5, tile_size);
+        createRouteTile(boardSprite,board,18, 560, 159, tile_size);
+        createRouteTile(boardSprite,board,19, 485, 159, tile_size);
 
         board[3].isRosette = true;
         board[7].isRosette = true;
@@ -222,20 +233,21 @@
         else{
             players[0] = new ComputerPlayer(0, 'Biały');
         }
-        players[0].BeginTile = new BeginTile(0, 0, 400, 60);
-        players[0].EndTile = new EndTile(400, 0, 400, 60, players[0]);
+        players[0].BeginTile = new BeginTile(100, 0, 200, boardSprite.position.y);
+        players[0].EndTile = new EndTile(500, 0, 200, boardSprite.position.y, players[0]);
         players[0].Route = [0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile];
         tiles.push(players[0].BeginTile);
         tiles.push(players[0].EndTile);
         for (let i = 0; i < pawnNumber; i++) {
             let sprite = new PIXI.Sprite(white);
-            sprite.x = 22 + i * 44;
-            sprite.y = whiteLine;
             app.stage.addChild(sprite);
             let pawn = new Pawn(players[0], sprite,board);
             pawn.tile = players[0].BeginTile;
             players[0].pawns.push(pawn);
             players[0].BeginTile.pawns.push(pawn);
+            players[0].BeginTile.setPawnDestination(pawn);
+            pawn.sprite.x = pawn.destinationX;
+            pawn.sprite.y = pawn.destinationY;
         }
 
         if($("#player2").val() === "human"){
@@ -244,29 +256,25 @@
         else{
             players[1] = new ComputerPlayer(1, 'Czarny');
         }
-        players[1].BeginTile = new BeginTile(0, 310, 400, 60);
-        players[1].EndTile = new EndTile(400, 310, 400, 60, players[1]);
+        players[1].BeginTile = new BeginTile(100, boardSprite.y + boardSprite.height, 200, boardSprite.y);
+        players[1].EndTile = new EndTile(500, boardSprite.y + boardSprite.height, 200, boardSprite.y, players[1]);
         players[1].Route = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile];
         tiles.push(players[1].BeginTile);
         tiles.push(players[1].EndTile);
         for (let i = 0; i < pawnNumber; i++) {
             let sprite = new PIXI.Sprite(black);
-            sprite.x = 22 + i * 44;
-            sprite.y = blackLine;
             app.stage.addChild(sprite);
             let pawn = new Pawn(players[1], sprite,board);
             pawn.tile = players[1].BeginTile;
             players[1].pawns.push(pawn);
             players[1].BeginTile.pawns.push(pawn);
+            players[1].BeginTile.setPawnDestination(pawn);
+            pawn.sprite.x = pawn.destinationX;
+            pawn.sprite.y = pawn.destinationY;
         }
-        for (let tile of tiles) {
-            if (board.indexOf(tile) === -1){
-                tile.draw();
-            }
-            else{
-                tile.draw();
-            }
-        }
+        // for (let tile of tiles) {
+        //     tile.draw();
+        // }
 
 
         setCurrentPlayer(0);
@@ -275,7 +283,6 @@
             if(key.keyCode === 32){
                 dicesTile.onClick();
             }
-
         }
 
         document.addEventListener('keydown', onKeyDown);
