@@ -11,16 +11,27 @@
 <body>
 
 <div id="ChooseDiv">
-    <label for="player1">Biały gracz: </label>
-    <select id="player1" title="Biały gracz">
-        <option value="computer">Computer</option>
-        <option value="human">Human</option>
-    </select>
-    <label for="player2">Drugi gracz: </label>
-    <select id="player2" title="Czarny gracz">
-        <option value="computer">Computer</option>
-        <option value="human">Human</option>
-    </select>
+    <div id="GameModeDiv">
+        <label>Gracz vs Gracz</label><input type="radio" name="gameMode" value="PvP" onchange="$('#PlayerColorDiv').hide();" checked>
+        <label>Gracz vs Komputer</label><input type="radio" name="gameMode" value="PvC" onchange="$('#PlayerColorDiv').show();">
+        <label>Komputer vs Komputer</label><input type="radio" name="gameMode" value="CvC" onchange="$('#PlayerColorDiv').hide();">
+    </div>
+
+    <div id="PlayerColorDiv" style="display: none">
+        <label>Białe</label><input type="radio" name="humanColor" value="white" checked>
+        <label>Czarne</label><input type="radio" name="humanColor" value="black">
+    </div>
+
+    <!--<label for="player1">Biały gracz: </label>-->
+    <!--<select id="player1" title="Biały gracz">-->
+        <!--<option value="computer">Computer</option>-->
+        <!--<option value="human">Human</option>-->
+    <!--</select>-->
+    <!--<label for="player2">Drugi gracz: </label>-->
+    <!--<select id="player2" title="Czarny gracz">-->
+        <!--<option value="computer">Computer</option>-->
+        <!--<option value="human">Human</option>-->
+    <!--</select>-->
 
 
     <select id="PawnsNumber"></select>
@@ -87,7 +98,7 @@
                 let operation_and_delay = AnimationQueue.queue.shift();
                 let operation = operation_and_delay[0];
                 delay = operation_and_delay[1];
-                if(typeof operation == "function"){
+                if(typeof operation === "function"){
                     operation();
                 }
             }
@@ -248,14 +259,34 @@
         for (let tile of board) {
             tiles.push(tile);
         }
+        
+        switch ($('input[name="gameMode"]:checked').val()) {
+            case "PvP":
+                players[0] = new Player(0, 'Biały');
+                $("#AutoRollPlayer1Div").show();
+                players[1] = new Player(1, 'Czarny');
+                $("#AutoRollPlayer2Div").show();
+                break;
+            case "PvC":
+                if($('input[name="humanColor"]:checked').val()==='white'){
+                    players[0] = new Player(0, 'Biały');
+                    $("#AutoRollPlayer1Div").show();
+                    players[1] = new ComputerPlayer(1, 'Czarny');
+                }
+                else{
+                    players[0] = new ComputerPlayer(0, 'Biały');
+                    players[1] = new Player(1, 'Czarny');
+                    $("#AutoRollPlayer2Div").show();
+                }
+                break;
+            case "CvC":
+                players[0] = new ComputerPlayer(0, 'Biały');
+                players[1] = new ComputerPlayer(1, 'Czarny');
+                break;
+            
+        }
 
-        if($("#player1").val() === "human"){
-            players[0] = new Player(0, 'Biały');
-            $("#AutoRollPlayer1Div").show();
-        }
-        else{
-            players[0] = new ComputerPlayer(0, 'Biały');
-        }
+        
         players[0].BeginTile = new BeginTile(100, 0, 200, boardSprite.position.y);
         players[0].EndTile = new EndTile(500, 0, 200, boardSprite.position.y, players[0]);
         players[0].Route = [0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile];
@@ -273,13 +304,6 @@
             pawn.sprite.y = pawn.destinationY;
         }
 
-        if($("#player2").val() === "human"){
-            players[1] = new Player(1, 'Czarny');
-            $("#AutoRollPlayer2Div").show();
-        }
-        else{
-            players[1] = new ComputerPlayer(1, 'Czarny');
-        }
         players[1].BeginTile = new BeginTile(100, boardSprite.y + boardSprite.height, 200, boardSprite.y);
         players[1].EndTile = new EndTile(500, boardSprite.y + boardSprite.height, 200, boardSprite.y, players[1]);
         players[1].Route = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile];
