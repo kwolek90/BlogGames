@@ -12,14 +12,14 @@
 
 <div id="ChooseDiv">
     <div id="GameModeDiv">
-        <label>Gracz vs Gracz</label><input type="radio" name="gameMode" value="PvP" onchange="$('#PlayerColorDiv').hide();" checked>
-        <label>Gracz vs Komputer</label><input type="radio" name="gameMode" value="PvC" onchange="$('#PlayerColorDiv').show();">
-        <label>Komputer vs Komputer</label><input type="radio" name="gameMode" value="CvC" onchange="$('#PlayerColorDiv').hide();">
+        <label for="PvP">Gracz vs Gracz</label><input id="PvP" type="radio" name="gameMode" value="PvP" onchange="$('#PlayerColorDiv').hide();" checked>
+        <label for="PvC">Gracz vs Komputer</label><input id="PvC" type="radio" name="gameMode" value="PvC" onchange="$('#PlayerColorDiv').show();">
+        <label for="CvC">Komputer vs Komputer</label><input id="CvC" type="radio" name="gameMode" value="CvC" onchange="$('#PlayerColorDiv').hide();">
     </div>
 
     <div id="PlayerColorDiv" style="display: none">
-        <label>Białe</label><input type="radio" name="humanColor" value="white" checked>
-        <label>Czarne</label><input type="radio" name="humanColor" value="black">
+        <label for="white">Białe</label><input id="white" type="radio" name="humanColor" value="white" checked>
+        <label for="black">Czarne</label><input id="black" type="radio" name="humanColor" value="black">
     </div>
 
     <!--<label for="player1">Biały gracz: </label>-->
@@ -33,7 +33,7 @@
         <!--<option value="human">Human</option>-->
     <!--</select>-->
 
-
+    <label for="PawnsNumber">Pawns number:</label>
     <select id="PawnsNumber"></select>
 
     <button onclick="StartGame()">Start</button>
@@ -49,6 +49,8 @@
         <input type="checkbox" id="AutoRollPlayer2" onchange="onAutoRollChange(this,1)">
     </div>
 </div>
+
+<button id="RestartButton" type="button" onclick="window.location.reload()" style="display: none">Restart</button>
 
 <div id="DebugDiv" style="display: none">
 
@@ -77,7 +79,7 @@
         let rollResult = $('#RollResult');
         rollResult.append("<input type='radio' name='diceResult' value='Roll' checked>Roll</input>");
         for(let i = 1; i<=4; i += 1){
-            rollResult.append("<input type='radio' name='diceResult' value=\""+i+"\">"+i+"</input>");
+            rollResult.append("<input type='radio' name='diceResult' value='"+i+"'>"+i+"</input>");
         }
 
 
@@ -188,10 +190,12 @@
         //load an image and run the `setup` function when it's done
         //This `setup` function will run when the image has loaded
 
+
         AnimationQueue.next();
         $('#ChooseDiv').hide();
         $('#DebugDiv').show();
         $('#SettingsDiv').show();
+        $('#RestartButton').show();
 
         pawnNumber = $('#PawnsNumber').val();
 
