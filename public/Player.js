@@ -1,4 +1,4 @@
-﻿
+
 
 class Player {
     constructor(id, image) {
@@ -82,8 +82,9 @@ class ComputerPlayer extends Player {
             var cint = setInterval(function () {
                 if(!AnimationQueue.isBusy){
                     clearInterval(cint);
-                    dicesTile.onClick();
-                    currentPlayer.makeMove();
+                    if(dicesTile.onClick()){
+                        currentPlayer.makeMove();
+                    }
                 }
             },50)
         }

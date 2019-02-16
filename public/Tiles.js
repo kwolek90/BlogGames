@@ -150,12 +150,14 @@ class RollTile extends Tile {
             currentPlayer.rolled = true;
             if (this.result === 0) {
                 nextPlayerTurn();
+                return false;
             }
             else {
                 currentPlayer.roll();
             }
 
             rollText.text = "Move pawn by:" + this.result;
+            return true;
         }
     }
     draw() {
