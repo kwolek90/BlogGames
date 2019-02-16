@@ -157,6 +157,7 @@ class RollTile extends Tile {
             }
 
             rollText.text = "Move pawn by:" + this.result;
+
             return true;
         }
     }

@@ -42,11 +42,21 @@ class Pawn {
 
     drawPawnMove(destinationTileID){
         let pawn = this;
-        if(this.routeID !== destinationTileID){
+        if(noAnimations){
+            this.routeID = destinationTileID;
+            let tileID = this.player.Route[this.routeID];
+            let tile = this.board[tileID];
+            if(tileID === endTile){
+                tile = this.player.EndTile;
+            }
+            tile.setPawnDestination(this);
+            pawn.draw(this.destinationX, this.destinationY);
+        }
+        else if(this.routeID !== destinationTileID){
             if( this.routeID === -1 ){
-                let exitCoords = this.player.BeginTile.getExit();
-                if(pawn.sprite.x !== exitCoords[0] || pawn.sprite.y !== exitCoords[1]){
-                    this.drawSimpleMove(exitCoords[0],exitCoords[1], function(){pawn.drawPawnMove(destinationTileID)});
+                let exitCords = this.player.BeginTile.getExit();
+                if(pawn.sprite.x !== exitCords[0] || pawn.sprite.y !== exitCords[1]){
+                    this.drawSimpleMove(exitCords[0],exitCords[1], function(){pawn.drawPawnMove(destinationTileID)});
                     return;
                 }
             }
@@ -113,10 +123,9 @@ class Pawn {
         let nextTileID = this.player.Route[this.routeID + dicesTile.result];
         if (nextTileID === endTile) {
             return true;
-        } else {
-            var newTile = board[nextTileID];
         }
 
+        let newTile = board[nextTileID];
 
         if (newTile === undefined) {
             return false;
@@ -128,6 +137,26 @@ class Pawn {
             }
         }
         return true;
+    }
+
+    getMove(){
+        let nextTileID = this.player.Route[this.routeID + dicesTile.result];
+        if (nextTileID === endTile) {
+            return new Move(this, nextTileID, "finish");
+        }
+
+        let newTile = board[nextTileID];
+
+        if (newTile.pawn != null) {
+            if (newTile.pawn.player !== this.player && !newTile.isRosette) {
+                return new Move(this, nextTileID, "capture");
+            }
+        }
+        else if (newTile.isRosette) {
+            return new Move(this, nextTileID, "nextMove");
+        }
+
+        return new Move(this, nextTileID, "move");
     }
 
     move() {
@@ -172,7 +201,7 @@ class Pawn {
         } else {
             nextPlayerTurn();
         }
-        rollText.text = "Roll";
+        //rollText.text = "Roll";
         return true;
     }
     getCaptured() {
@@ -180,7 +209,12 @@ class Pawn {
         this.routeID = -1;
         this.tile.setPawn(this);
         this.tile.setPawnDestination(this);
-        this.drawSimpleMove(this.destinationX,this.destinationY);
+        if(noAnimations){
+            this.draw(this.destinationX,this.destinationY);
+        }
+        else{
+            this.drawSimpleMove(this.destinationX,this.destinationY);
+        }
 
     }
 

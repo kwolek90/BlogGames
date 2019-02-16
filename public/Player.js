@@ -1,4 +1,4 @@
-
+﻿
 
 class Player {
     constructor(id, image) {
@@ -17,12 +17,17 @@ class Player {
         this.rolled = false;
         this.made_move = false;
         if (this.autoroll){
-            var cint = setInterval(function () {
-                if(!AnimationQueue.isBusy){
-                    clearInterval(cint);
-                    dicesTile.onClick();
-                }
-            },50)
+            if(noAnimations){
+                dicesTile.onClick();
+            }
+            else {
+                var cint = setInterval(function () {
+                    if(!AnimationQueue.isBusy){
+                        clearInterval(cint);
+                        dicesTile.onClick();
+                    }
+                },50)
+            }
         }
     }
 
@@ -79,24 +84,68 @@ class ComputerPlayer extends Player {
         this.rolled = false;
         this.made_move = false;
         if (this.autoroll){
-            var cint = setInterval(function () {
-                if(!AnimationQueue.isBusy){
-                    clearInterval(cint);
-                    if(dicesTile.onClick()){
-                        currentPlayer.makeMove();
-                    }
+            if(noAnimations){
+                if (dicesTile.onClick()) {
+                    currentPlayer.makeMove();
                 }
-            },50)
+            }
+            else {
+                var cint = setInterval(function () {
+                    if (!AnimationQueue.isBusy) {
+                        clearInterval(cint);
+                        if (dicesTile.onClick()) {
+                            currentPlayer.makeMove();
+                        }
+                    }
+                }, 50)
+            }
         }
 
     }
 
     makeMove() {
-        for (var pawn of this.pawns) {
-            if (pawn.canMove) {
-                pawn.move();
+        let possibleMoves = [];
+        for (let pawn of this.pawns) {
+            if (pawn.checkIfCanMove()) {
+                possibleMoves.push(pawn.getMove());
+            }
+        }
+        possibleMoves[0].pawn.move();
+    }
+
+    makeMoveAggressive(){
+        let possibleMoves = [];
+        for (let pawn of this.pawns) {
+            if (pawn.checkIfCanMove()) {
+                possibleMoves.push(pawn.getMove());
+            }
+        }
+        for(let move of possibleMoves){
+            if(move.result === "capture"){
+                move.pawn.move();
                 return;
             }
         }
+        for(let move of possibleMoves){
+            if(move.result === "nextMove"){
+                move.pawn.move();
+                return;
+            }
+        }
+        for(let move of possibleMoves){
+            if(move.result === "finish"){
+                move.pawn.move();
+                return;
+            }
+        }
+
+        possibleMoves[0].pawn.move();
+
+    }
+}
+
+class ComputerPlayerAggressive extends ComputerPlayer{
+    makeMove(){
+        this.makeMoveAggressive();
     }
 }
