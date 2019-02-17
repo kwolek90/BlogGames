@@ -129,6 +129,7 @@ class RollTile extends Tile {
     constructor(x, y, w, h) {
         super(x, y, w, h);
         this.roll = [false, false, false, false];
+        this.history = [];
     }
     onClick() {
         if (!currentPlayer.rolled && !AnimationQueue.isBusy) {
@@ -146,24 +147,34 @@ class RollTile extends Tile {
                     this.roll[i] = true;
                 }
             }
-            this.draw();
+            this.history.push({player: currentPlayer.Name, result: this.result});
             currentPlayer.rolled = true;
             if (this.result === 0) {
                 nextPlayerTurn();
+                this.draw();
                 return false;
             }
             else {
                 currentPlayer.roll();
             }
-
-            rollText.text = "Move pawn by:" + this.result;
-
+            this.draw();
             return true;
         }
     }
     draw() {
-
+        let text = "";
+        for(let i = Math.max(this.history.length - 5, 0); i < this.history.length; i++){
+            text += "Player " + this.history[i].player + " rolled " + this.history[i].result + ".\n";
+        }
+        if(currentPlayer.rolled){
+            text += "Move pawn by:" + this.result;
+        }
+        else{
+            text += "Roll";
+        }
+        rollText.text = text;
     }
+
     get result() {
         let r = 0;
         for (let i of this.roll) {

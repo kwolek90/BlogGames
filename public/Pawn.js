@@ -201,7 +201,9 @@ class Pawn {
         } else {
             nextPlayerTurn();
         }
-        //rollText.text = "Roll";
+
+        dicesTile.draw();
+
         return true;
     }
     getCaptured() {
