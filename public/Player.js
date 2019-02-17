@@ -117,28 +117,26 @@ class ComputerPlayer extends Player {
         let possibleMoves = [];
         for (let pawn of this.pawns) {
             if (pawn.checkIfCanMove()) {
-                possibleMoves.push(pawn.getMove());
-            }
-        }
-        for(let move of possibleMoves){
-            if(move.result === "capture"){
-                move.pawn.move();
-                return;
-            }
-        }
-        for(let move of possibleMoves){
-            if(move.result === "nextMove"){
-                move.pawn.move();
-                return;
-            }
-        }
-        for(let move of possibleMoves){
-            if(move.result === "finish"){
-                move.pawn.move();
-                return;
+                let pawnMove = pawn.getMove();
+                switch(pawnMove.result){
+                    case "capture":
+                        pawnMove.value = 4;
+                        break;
+                    case "nextMove":
+                        pawnMove.value = 3;
+                        break;
+                    case "finish":
+                        pawnMove.value = 2;
+                        break;
+                    default:
+                        pawnMove.value = 0;
+                        break;
+                }
+                possibleMoves.push(pawnMove);
             }
         }
 
+        possibleMoves.sort(function(a,b){return a.value - b.value;});
         possibleMoves[0].pawn.move();
 
     }

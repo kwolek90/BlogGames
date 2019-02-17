@@ -58,6 +58,10 @@
     </div>
 </div>
 
+<script src="Common.js"></script>
+<script src="Move.js"></script>
+<script src="Game.js"></script>
+<script src="Board.js"></script>
 <script src="Player.js"></script>
 <script src="Pawn.js"></script>
 <script src="Tiles.js"></script>
@@ -236,24 +240,28 @@
         for (let tile of board) {
             tiles.push(tile);
         }
-        
+
+        var autoRollPlayer1Div = $("#AutoRollPlayer1Div");
+        var autoRollPlayer2Div = $("#AutoRollPlayer2Div");
+
+
         switch ($('input[name="gameMode"]:checked').val()) {
             case "PvP":
                 players[0] = new Player(0, 'Biały');
-                $("#AutoRollPlayer1Div").show();
+                autoRollPlayer1Div.show();
                 players[1] = new Player(1, 'Czarny');
-                $("#AutoRollPlayer2Div").show();
+                autoRollPlayer2Div.show();
                 break;
             case "PvC":
                 if($('input[name="humanColor"]:checked').val()==='white'){
                     players[0] = new Player(0, 'Biały');
-                    $("#AutoRollPlayer1Div").show();
+                    autoRollPlayer1Div.show();
                     players[1] = new ComputerPlayer(1, 'Czarny');
                 }
                 else{
                     players[0] = new ComputerPlayer(0, 'Biały');
                     players[1] = new Player(1, 'Czarny');
-                    $("#AutoRollPlayer2Div").show();
+                    autoRollPlayer2Div.show();
                 }
                 break;
             case "CvC":
