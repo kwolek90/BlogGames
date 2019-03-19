@@ -115,6 +115,17 @@ class ComputerPlayer extends Player {
 
     makeMoveAggressive(){
         let possibleMoves = [];
+
+        let boardValues = [];
+        for(let i = 0; board.length; i++){
+            let value = 1;
+            let pawn = board[i].pawn;
+            if(pawn !== undefined){
+                
+            }
+            boardValues.push(value);
+        }
+
         for (let pawn of this.pawns) {
             if (pawn.checkIfCanMove()) {
                 let pawnMove = pawn.getMove();
@@ -129,7 +140,7 @@ class ComputerPlayer extends Player {
                         pawnMove.value = 2;
                         break;
                     default:
-                        pawnMove.value = 0;
+                        pawnMove.value = boardValues[pawnMove.newPosition];
                         break;
                 }
                 possibleMoves.push(pawnMove);

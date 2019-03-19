@@ -7,6 +7,11 @@
 </head>
 
 <body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+
+<div id="root"></div>
 
 <div id="ChooseDiv">
     <div id="GameModeDiv">
@@ -123,7 +128,8 @@
 
     var bellRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile]];
     var masterRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 19, 18, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 16, 15, 18, 19,  endTile]];
-    var route = bellRoutes;
+    var rosettes = [3,7,11,17,19]
+    var route = masterRoutes;
 
 
     var propability = [];
@@ -133,6 +139,46 @@
     propability.push(4./16);
     propability.push(1./16);
 
+    function rand(){
+        var result = 0;
+        for (let i = 0; i < 4; i++) {
+            result += Math.random() < 0.5;
+        }
+        return result;
+    }
+
+
+    var propabilities = [];
+    var expectedMoves = [];
+
+    for(let i = -1; i <= route[0].length+4; i++){
+        expectedMoves[i]=0.0;
+        propabilities[i]=0.0;
+    }
+    console.log(expectedMoves);
+    for(let k = route[0].length; k >= -1; k--){
+        let tries = 0;
+        let moves = 0;
+        for(let i = 0; i < 1000; i++){
+            tries+=1;
+            let j = rand();
+            if(j>0 && k+j<=route[0].length){
+                if(rosettes.indexOf(route[0][k+j]) !== -1){
+                    tries -= 1;
+                }
+                expectedMoves[k] += tries + expectedMoves[k+j];
+                tries = 0;
+                moves += 1;
+            }
+        }
+        if(moves > 0){
+            expectedMoves[k]/=moves;
+        }
+    }
+
+    // for(let i = 0; i < route[0].length; i++){
+    //     console.log(i,expectedMoves[i]);
+    // }
 
 
     function onAutoRollChange(e,id){
@@ -227,11 +273,9 @@
         createRouteTile(boardSprite,board,18, 560, 159, tile_size);
         createRouteTile(boardSprite,board,19, 485, 159, tile_size);
 
-        board[3].isRosette = true;
-        board[7].isRosette = true;
-        board[11].isRosette = true;
-        board[17].isRosette = true;
-        board[19].isRosette = true;
+        for(let i in rosettes){
+            board[rosettes[i]].isRosette = true;
+        }
 
         for (let tile of board) {
             tiles.push(tile);
