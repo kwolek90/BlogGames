@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ToguzBoard from './ToguzKorgool/ToguzKorgool';
+import ToguzBoard from './ToguzKorgool/ToguzKorgool.jsx';
+import {AI,Toguz} from './ToguzKorgool/ToguzKorgool.js';
 import Ur from './Ur/Ur';
 import TamiAdventure from './TamiAdventure/TamiAdventure';
 import './index.css';
 
 class Game extends React.Component {
-
     state = {
         height: 8,
         width: 8,
@@ -26,11 +26,7 @@ class Game extends React.Component {
                 displayName:"Przygody Tamisia"
             }
         ]
-
-
     };
-
-
     renderChooseGame(){
         return this.state.availableGames.map((game) => {
                 return <div onClick={() => this.setState({currentGame: game})}>{game.displayName}</div>
@@ -56,3 +52,28 @@ class Game extends React.Component {
 }
 
 ReactDOM.render(<Game />, document.getElementById('root'));
+
+for(let ai1 of [AI.randomMove,AI.getMostBalls,AI.keepMostBalls]){
+    for(let ai2 of [AI.randomMove,AI.getMostBalls,AI.keepMostBalls]){
+
+        let playerOneWins = 0;
+        let playerTwoWins = 0;
+//console.time('testPlay');
+
+        for(let i=0;i<2000;i++){
+            let toguzTest = new Toguz(ai1,ai2);
+            let winner = toguzTest.testPlay();
+            if(winner !== null){
+                if(winner.id === 0){
+                    playerOneWins += 1;
+                }
+                else{
+                    playerTwoWins += 1;
+                }
+            }
+        }
+//console.timeEnd('testPlay');
+        console.log(ai1.name, ai2.name ,playerOneWins,playerTwoWins);
+    }
+
+}

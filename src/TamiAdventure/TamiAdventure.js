@@ -42,6 +42,9 @@ export default class TamiAdventure extends React.Component {
                 if(!game.state.isJumping){
                     game.jump();
                 }
+                break;
+            default:
+                break;
         }
 
     }
@@ -95,8 +98,8 @@ export default class TamiAdventure extends React.Component {
             <div>
                 <h2>Tami Adventure</h2>
                 <div>
-                    <img src={testLevel} style={currentStageStyle}/>
-                    <img src={testDog} style={currentDogStyle}/>
+                    <img src={testLevel} style={currentStageStyle} alt={""}/>
+                    <img src={testDog} style={currentDogStyle} alt={""}/>
                 </div>
             </div>
         )
