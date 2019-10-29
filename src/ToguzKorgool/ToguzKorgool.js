@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+//import * as $ from 'jquery';
 
 
 class Random{
@@ -27,73 +27,52 @@ var random = new Random(0);
 class Hole{
     balls = 9;
     owner = null;
-    isHause = false;
+    isHouse = false;
 
     constructor(owner){
         this.owner = owner;
     }
 }
 
-function chooseRandomMove(moves){
-    return moves[random.getRangedValue(0,moves.length)];
+function randomScore(move,holes, opponentHoles, result, opponentResult){
+    return random.getValue();
 }
 
-function getMostBallsMove(moves,myHoles,opponentHoles){
-    let bestMove = chooseRandomMove(moves,myHoles,opponentHoles);
-    let mostBalls = 0;
-    for(let move of moves){
-        let balls = myHoles[move].balls;
-        let newPosition = move + balls + (balls === 1 ? 0 : -1);
-        let newHoleNumber = newPosition % 9;
-        let newHolePlayer = Math.floor(newPosition/9);
-        if((newHolePlayer % 2) === 1 && (opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0){
-            let newHoleBalls = opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2;
-            if(newHoleBalls > mostBalls){
-                mostBalls = newHoleBalls;
-                bestMove = move;
-            }
-        }
+function captureBallsScore(move,holes, opponentHoles, result, opponentResult){
+    let balls = holes[move].balls;
+    let newPosition = move + balls + (balls === 1 ? 0 : -1);
+    let newHoleNumber = newPosition % 9;
+    let newHolePlayer = Math.floor(newPosition/9);
+    if((newHolePlayer % 2) === 1 && (opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0){
+        return opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2;
     }
-    return bestMove;
+    return 0;
 }
 
 
-function haveMostBallsAfterMove(moves,myHoles,opponentHoles){
-    let bestMove = chooseRandomMove(moves,myHoles,opponentHoles);
-    let mostBalls = 0;
-    for(let move of moves){
-        let balls = myHoles[move].balls;
-        let newPosition = move + balls + (balls === 1 ? 0 : -1);
-        let newHoleNumber = newPosition % 9;
-        let newHolePlayer = Math.floor(newPosition/9);
-        let currentBalls = myHoles.reduce((ps,h) => ps+h.balls,0);
-        //console.log(currentBalls);
-        if(newHolePlayer === 0){
-            let newBalls = currentBalls;
-            if(newBalls > mostBalls){
-                mostBalls = newBalls;
-                bestMove = move;
-            }
-        }
-        if(newHolePlayer === 1){
-            let newBalls = currentBalls - balls + (9 - move);
-            if((newHolePlayer % 2) === 1 && (opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0) {
-                newBalls += opponentHoles[newHoleNumber].balls + 1;
-            }
-            if(newBalls > mostBalls){
-                mostBalls = newBalls;
-                bestMove = move;
-            }
-        }
+function possesedBallsScore(move,holes, opponentHoles, result, opponentResult){
+    let balls = holes[move].balls;
+    let newPosition = move + balls + (balls === 1 ? 0 : -1);
+    let newHoleNumber = newPosition % 9;
+    let newHolePlayer = Math.floor(newPosition/9);
+    let currentBalls = holes.reduce((ps,h) => ps+h.balls,0);
+    if(newHolePlayer === 0){
+        return currentBalls;
     }
-    //console.log(bestMove,mostBalls);
-    return bestMove;
+    if(newHolePlayer === 1){
+        let newBalls = currentBalls - balls + (9 - move);
+        if((newHolePlayer % 2) === 1 && (opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0) {
+            newBalls += opponentHoles[newHoleNumber].balls + 1;
+        }
+        return newBalls;
+    }
+    return 0;
 }
 
 export var AI = {
-    randomMove: chooseRandomMove,
-    getMostBalls: getMostBallsMove,
-    keepMostBalls: haveMostBallsAfterMove
+    random: randomScore,
+    bestCapture: captureBallsScore,
+    keepMostBalls: possesedBallsScore
 };
 
 class Player{
@@ -111,28 +90,40 @@ class Player{
         }
         let timeStamp = new Date().valueOf();
         this.seed = timeStamp;
-        this.random = new Random(timeStamp);
-        this.chooseBestMove = chooseMove;
+        this.random = new Random(this.seed);
+        this.assessMove = chooseMove;
     }
 
     getPossibleMoves(){
-        return $.map(this.holes, function(obj, index) {
-            if(obj.balls > 0) {
-                return index;
+        let possibleMoves = [];
+        for(let index in this.holes){
+            if(this.holes[index].balls > 0){
+                possibleMoves.push(index);
             }
-        });
+        }
+        return possibleMoves;
     }
 
     makeMove(){
         let possibleMoves = this.getPossibleMoves();
         if(possibleMoves.length > 0){
-            let move = this.chooseBestMove(possibleMoves, this.holes, this.opponent.holes);
-            this.moveBalls(move);
+            let bestMove = possibleMoves[0];
+            let bestScore = 0.0.MIN_VALUE;
+            for(let i in possibleMoves){
+                let move = possibleMoves[i];
+                let score = this.assessMove(move,this.holes, this.opponent.holes, this.result, this.opponent.result);
+                if(score > bestScore){
+                    bestScore = score;
+                    bestMove = move;
+                }
+            }
+            this.moveBalls(bestMove);
         }
     }
 
 
     moveBalls(i) {
+        i = parseInt(i);
         let balls = this.holes[i].balls;
         if ( balls === 0) {
             return;
@@ -150,7 +141,10 @@ class Player{
                 i -= 9;
                 currentPlayer = this.opponent;
             }
-            if (currentPlayer.holes[k].isHause) {
+            if(currentPlayer.holes[k] === undefined){
+                console.log(currentPlayer,k,j,i);
+            }
+            if (currentPlayer.holes[k].isHouse) {
                 currentPlayer.holes[k].owner.result += 1;
             }
             else {
@@ -165,7 +159,7 @@ class Player{
             }
             else if (k !== 9 && currentPlayer.holes[k].balls === 3 && !this.hasHouse && (this.opponent.housePosition === k)) {
                 this.housePosition = k;
-                this.opponent.holes[k].isHause = true;
+                this.opponent.holes[k].isHouse = true;
                 this.opponent.holes[k].owner = this;
                 this.result += 3;
                 this.opponent.holes[k].balls = 0;
@@ -177,12 +171,9 @@ class Player{
 
 
 export class Toguz {
-    gameFinished = false;
-    winner = null;
 
     constructor(playerOneDecision,playerTwoDecision){
         this.players = [];
-        //this.players.push(new Player(0,chooseRandomMove));
         this.players.push(new Player(0,playerOneDecision));
         this.players.push(new Player(1,playerTwoDecision));
 
@@ -218,8 +209,6 @@ export class Toguz {
 
             this.currentPlayer = this.currentPlayer.opponent;
 
-
-
             if(this.currentPlayer.result > 81){
                 winner = this.currentPlayer;
                 finished = true;
@@ -230,12 +219,6 @@ export class Toguz {
             }
 
         }
-        // if(winner !== null){
-        //     console.log(turns,winner.id, winner.result);
-        // }
-        // else{
-        //     console.log(turns,this.currentPlayer, this.currentPlayer.opponent);
-        // }
         return winner;
     }
 }

@@ -53,8 +53,8 @@ class Game extends React.Component {
 
 ReactDOM.render(<Game />, document.getElementById('root'));
 
-for(let ai1 of [AI.randomMove,AI.getMostBalls,AI.keepMostBalls]){
-    for(let ai2 of [AI.randomMove,AI.getMostBalls,AI.keepMostBalls]){
+for(let ai1 of [AI.random,AI.bestCapture,AI.keepMostBalls]){
+    for(let ai2 of [AI.random,AI.bestCapture,AI.keepMostBalls]){
 
         let playerOneWins = 0;
         let playerTwoWins = 0;

@@ -59,13 +59,13 @@
     </div>
 </div>
 
-<script src="Common.js"></script>
-<script src="Move.js"></script>
-<script src="Game.js"></script>
-<script src="Board.js"></script>
-<script src="Player.js"></script>
-<script src="Pawn.js"></script>
-<script src="Tiles.js"></script>
+<script src="./Common.js"></script>
+<script src="./Move.js"></script>
+<script src="./Game.js"></script>
+<script src="./Board.js"></script>
+<script src="./Player.js"></script>
+<script src="./Pawn.js"></script>
+<script src="./Tiles.js"></script>
 <script src="../src/ToguzKorgool/ToguzKorgool.js"></script>
 <script>
 
@@ -117,18 +117,6 @@
 
 
 
-    var tiles = [];
-    var board = [];
-    var tile_size = 65;
-    var pawnNumber = 7;
-    var finished = false;
-    var currentPlayer;
-    var players = [];
-    var endTile = "end";
-    var dicesTile;
-    var rollText = new PIXI.Text('ROLL');
-    var noAnimations = false;
-
     var bellRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile]];
     var masterRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 19, 18, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 16, 15, 18, 19,  endTile]];
     var rosettes = [3,7,11,17,19];
@@ -150,38 +138,6 @@
         return result;
     }
 
-
-    var propabilities = [];
-    var expectedMoves = [];
-
-    for(let i = -1; i <= route[0].length+4; i++){
-        expectedMoves[i]=0.0;
-        propabilities[i]=0.0;
-    }
-    console.log(expectedMoves);
-    for(let k = route[0].length; k >= -1; k--){
-        let tries = 0;
-        let moves = 0;
-        for(let i = 0; i < 1000; i++){
-            tries+=1;
-            let j = rand();
-            if(j>0 && k+j<=route[0].length){
-                if(rosettes.indexOf(route[0][k+j]) !== -1){
-                    tries -= 1;
-                }
-                expectedMoves[k] += tries + expectedMoves[k+j];
-                tries = 0;
-                moves += 1;
-            }
-        }
-        if(moves > 0){
-            expectedMoves[k]/=moves;
-        }
-    }
-
-    // for(let i = 0; i < route[0].length; i++){
-    //     console.log(i,expectedMoves[i]);
-    // }
 
 
     function onAutoRollChange(e,id){
