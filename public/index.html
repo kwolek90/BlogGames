@@ -2,8 +2,6 @@
 <html lang="pl">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script src="pixi.min.js"></script>
-    <script src="jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
@@ -13,315 +11,315 @@
 
 <div id="root"></div>
 
-<div id="ChooseDiv">
-    <div id="GameModeDiv">
-        <label for="PvP">Gracz vs Gracz</label><input id="PvP" type="radio" name="gameMode" value="PvP" onchange="$('#PlayerColorDiv').hide();" checked>
-        <label for="PvC">Gracz vs Komputer</label><input id="PvC" type="radio" name="gameMode" value="PvC" onchange="$('#PlayerColorDiv').show();">
-        <label for="CvC">Komputer vs Komputer</label><input id="CvC" type="radio" name="gameMode" value="CvC" onchange="$('#PlayerColorDiv').hide();">
-    </div>
+<!--<div id="ChooseDiv">-->
+    <!--<div id="GameModeDiv">-->
+        <!--<label for="PvP">Gracz vs Gracz</label><input id="PvP" type="radio" name="gameMode" value="PvP" onchange="$('#PlayerColorDiv').hide();" checked>-->
+        <!--<label for="PvC">Gracz vs Komputer</label><input id="PvC" type="radio" name="gameMode" value="PvC" onchange="$('#PlayerColorDiv').show();">-->
+        <!--<label for="CvC">Komputer vs Komputer</label><input id="CvC" type="radio" name="gameMode" value="CvC" onchange="$('#PlayerColorDiv').hide();">-->
+    <!--</div>-->
 
-    <div id="PlayerColorDiv" style="display: none">
-        <label for="white">Białe</label><input id="white" type="radio" name="humanColor" value="white" checked>
-        <label for="black">Czarne</label><input id="black" type="radio" name="humanColor" value="black">
-    </div>
+    <!--<div id="PlayerColorDiv" style="display: none">-->
+        <!--<label for="white">Białe</label><input id="white" type="radio" name="humanColor" value="white" checked>-->
+        <!--<label for="black">Czarne</label><input id="black" type="radio" name="humanColor" value="black">-->
+    <!--</div>-->
 
-    <label for="PawnsNumber">Pawns number:</label>
-    <select id="PawnsNumber"></select>
+    <!--<label for="PawnsNumber">Pawns number:</label>-->
+    <!--<select id="PawnsNumber"></select>-->
 
-    <button onclick="StartGame()">Start</button>
+    <!--<button onclick="StartGame()">Start</button>-->
 
-</div>
-<div id="SettingsDiv" style="display: none">
-    <div id="AutoRollPlayer1Div" style="display: none">
-        <label for="AutoRollPlayer1">Autoroll dla gracza białego</label>
-        <input type="checkbox" id="AutoRollPlayer1" onchange="onAutoRollChange(this,0)">
-    </div>
-    <div id="AutoRollPlayer2Div" style="display: none">
-        <label for="AutoRollPlayer2">Autoroll dla gracza czarnego</label>
-        <input type="checkbox" id="AutoRollPlayer2" onchange="onAutoRollChange(this,1)">
-    </div>
-    <button id="RestartButton" type="button" onclick="window.location.reload()" style="display: none">Restart</button>
-</div>
+<!--</div>-->
+<!--<div id="SettingsDiv" style="display: none">-->
+    <!--<div id="AutoRollPlayer1Div" style="display: none">-->
+        <!--<label for="AutoRollPlayer1">Autoroll dla gracza białego</label>-->
+        <!--<input type="checkbox" id="AutoRollPlayer1" onchange="onAutoRollChange(this,0)">-->
+    <!--</div>-->
+    <!--<div id="AutoRollPlayer2Div" style="display: none">-->
+        <!--<label for="AutoRollPlayer2">Autoroll dla gracza czarnego</label>-->
+        <!--<input type="checkbox" id="AutoRollPlayer2" onchange="onAutoRollChange(this,1)">-->
+    <!--</div>-->
+    <!--<button id="RestartButton" type="button" onclick="window.location.reload()" style="display: none">Restart</button>-->
+<!--</div>-->
 
-<label for="NoAnimationCheckBox">Brak animacji</label>
-<input id="NoAnimationCheckBox" type="checkbox" onclick="onNoAnimationChange(this)"/>
+<!--<label for="NoAnimationCheckBox">Brak animacji</label>-->
+<!--<input id="NoAnimationCheckBox" type="checkbox" onclick="onNoAnimationChange(this)"/>-->
 
-<div id="DebugDiv" style="display: none">
+<!--<div id="DebugDiv" style="display: none">-->
 
-    <div id="WhitePawnPosition"></div>
-    <div id="BlackPawnPosition"></div>
+    <!--<div id="WhitePawnPosition"></div>-->
+    <!--<div id="BlackPawnPosition"></div>-->
 
-    <div id="RollResult"></div>
+    <!--<div id="RollResult"></div>-->
 
-    <div id="PawnPositionDiv">
-        <div id="Player1PawnsDiv"></div>
-        <div id="Player2PawnsDiv"></div>
-    </div>
-</div>
+    <!--<div id="PawnPositionDiv">-->
+        <!--<div id="Player1PawnsDiv"></div>-->
+        <!--<div id="Player2PawnsDiv"></div>-->
+    <!--</div>-->
+<!--</div>-->
 
-<script src="./Common.js"></script>
-<script src="./Move.js"></script>
-<script src="./Game.js"></script>
-<script src="./Board.js"></script>
-<script src="./Player.js"></script>
-<script src="./Pawn.js"></script>
-<script src="./Tiles.js"></script>
-<script src="../src/ToguzKorgool/ToguzKorgool.js"></script>
-<script>
+<!--<script src="./Common.js"></script>-->
+<!--<script src="./Move.js"></script>-->
+<!--<script src="./Game.js"></script>-->
+<!--<script src="./Board.js"></script>-->
+<!--<script src="./Player.js"></script>-->
+<!--<script src="./Pawn.js"></script>-->
+<!--<script src="./Tiles.js"></script>-->
+<!--<script src="../src/ToguzKorgool/ToguzKorgool.js"></script>-->
+<!--<script>-->
 
-    $(document).ready(function () {
+    <!--$(document).ready(function () {-->
 
-        for(let i = 1; i<=100; i += 1){
-            $('#PawnsNumber').append("<option value=\""+i+"\">"+i+"</option>");
-        }
+        <!--for(let i = 1; i<=100; i += 1){-->
+            <!--$('#PawnsNumber').append("<option value=\""+i+"\">"+i+"</option>");-->
+        <!--}-->
 
-        let rollResult = $('#RollResult');
-        rollResult.append("<input type='radio' name='diceResult' value='Roll' checked>Roll</input>");
-        for(let i = 1; i<=4; i += 1){
-            rollResult.append("<input type='radio' name='diceResult' id='diceResult\"+i+\"' value='"+i+"'><label for='diceResult"+i+"'>"+i+"</label>");
-        }
+        <!--let rollResult = $('#RollResult');-->
+        <!--rollResult.append("<input type='radio' name='diceResult' value='Roll' checked>Roll</input>");-->
+        <!--for(let i = 1; i<=4; i += 1){-->
+            <!--rollResult.append("<input type='radio' name='diceResult' id='diceResult\"+i+\"' value='"+i+"'><label for='diceResult"+i+"'>"+i+"</label>");-->
+        <!--}-->
 
-       //
-
-
-    });
-
-    function onNoAnimationChange(e){
-        noAnimations = e.checked;
-    }
-
-    var AnimationQueue = {
-        queue:[],
-        isBusy: false,
-        next:function(){
-            let delay = 100;
-            if(AnimationQueue.queue.length > 0){
-                let operation_and_delay = AnimationQueue.queue.shift();
-                let operation = operation_and_delay[0];
-                delay = operation_and_delay[1];
-                if(typeof operation === "function"){
-                    operation();
-                }
-            }
-            else{
-                AnimationQueue.isBusy = false;
-            }
-            setTimeout(AnimationQueue.next, delay);
-
-        },
-        append:function(ms,callback){
-            AnimationQueue.isBusy = true;
-            AnimationQueue.queue.push([callback,ms]);
-        }
-    };
+       <!--//-->
 
 
+    <!--});-->
 
-    var bellRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile]];
-    var masterRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 19, 18, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 16, 15, 18, 19,  endTile]];
-    var rosettes = [3,7,11,17,19];
-    var route = masterRoutes;
+    <!--function onNoAnimationChange(e){-->
+        <!--noAnimations = e.checked;-->
+    <!--}-->
 
+    <!--var AnimationQueue = {-->
+        <!--queue:[],-->
+        <!--isBusy: false,-->
+        <!--next:function(){-->
+            <!--let delay = 100;-->
+            <!--if(AnimationQueue.queue.length > 0){-->
+                <!--let operation_and_delay = AnimationQueue.queue.shift();-->
+                <!--let operation = operation_and_delay[0];-->
+                <!--delay = operation_and_delay[1];-->
+                <!--if(typeof operation === "function"){-->
+                    <!--operation();-->
+                <!--}-->
+            <!--}-->
+            <!--else{-->
+                <!--AnimationQueue.isBusy = false;-->
+            <!--}-->
+            <!--setTimeout(AnimationQueue.next, delay);-->
 
-    var propability = [];
-    propability.push(1./16);
-    propability.push(4./16);
-    propability.push(6./16);
-    propability.push(4./16);
-    propability.push(1./16);
-
-    function rand(){
-        var result = 0;
-        for (let i = 0; i < 4; i++) {
-            result += Math.random() < 0.5;
-        }
-        return result;
-    }
+        <!--},-->
+        <!--append:function(ms,callback){-->
+            <!--AnimationQueue.isBusy = true;-->
+            <!--AnimationQueue.queue.push([callback,ms]);-->
+        <!--}-->
+    <!--};-->
 
 
 
-    function onAutoRollChange(e,id){
-        players[id].autoroll = e.checked;
-    }
+    <!--var bellRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 19, endTile]];-->
+    <!--var masterRoutes = [[0, 1, 2, 3, 8, 9, 10, 11, 12, 13, 14, 19, 18, 15, 16, 17, endTile],[4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 16, 15, 18, 19,  endTile]];-->
+    <!--var rosettes = [3,7,11,17,19];-->
+    <!--var route = masterRoutes;-->
 
 
-    let app = new PIXI.Application({
-            width: 1200,
-            height: 800,
-            antialiasing: true,
-            transparent: true,
-            resolution: 1
-        }
-    );
-    //Add the canvas that Pixi automatically created for you to the HTML document
-    document.body.appendChild(app.view);
+    <!--var propability = [];-->
+    <!--propability.push(1./16);-->
+    <!--propability.push(4./16);-->
+    <!--propability.push(6./16);-->
+    <!--propability.push(4./16);-->
+    <!--propability.push(1./16);-->
 
-
-    function StartGame(){
-        //load an image and run the `setup` function when it's done
-        //This `setup` function will run when the image has loaded
-
-
-        AnimationQueue.next();
-        $('#ChooseDiv').hide();
-        $('#DebugDiv').show();
-        $('#SettingsDiv').show();
-        $('#RestartButton').show();
-
-        pawnNumber = $('#PawnsNumber').val();
-
-        route = masterRoutes;
-
-        PIXI.loader
-            .add("dices.png")
-            .add("board.png")
-            .add("white.png")
-            .add("black.png")
-            .load(setup);
-    }
-
-    function createRouteTile(boardSprite,board,i,x,y,tile_size){
-        board[i] = new RouteTile(boardSprite.position.x + x, boardSprite.position.y + y, tile_size, tile_size);
-    }
-
-    function setup() {
-
-        // let game = new Game();
-        // let board = new Board();
+    <!--function rand(){-->
+        <!--var result = 0;-->
+        <!--for (let i = 0; i < 4; i++) {-->
+            <!--result += Math.random() < 0.5;-->
+        <!--}-->
+        <!--return result;-->
+    <!--}-->
 
 
 
-        let boardSprite = new PIXI.Sprite(PIXI.loader.resources["board.png"].texture);
-        boardSprite.position.x = 0;
-        boardSprite.position.y = 100;
-        let white = PIXI.Texture.fromImage("white.png");
-        let black = PIXI.Texture.fromImage("black.png");
+    <!--function onAutoRollChange(e,id){-->
+        <!--players[id].autoroll = e.checked;-->
+    <!--}-->
+
+
+    <!--let app = new PIXI.Application({-->
+            <!--width: 1200,-->
+            <!--height: 800,-->
+            <!--antialiasing: true,-->
+            <!--transparent: true,-->
+            <!--resolution: 1-->
+        <!--}-->
+    <!--);-->
+    <!--//Add the canvas that Pixi automatically created for you to the HTML document-->
+    <!--document.body.appendChild(app.view);-->
+
+
+    <!--function StartGame(){-->
+        <!--//load an image and run the `setup` function when it's done-->
+        <!--//This `setup` function will run when the image has loaded-->
+
+
+        <!--AnimationQueue.next();-->
+        <!--$('#ChooseDiv').hide();-->
+        <!--$('#DebugDiv').show();-->
+        <!--$('#SettingsDiv').show();-->
+        <!--$('#RestartButton').show();-->
+
+        <!--pawnNumber = $('#PawnsNumber').val();-->
+
+        <!--route = masterRoutes;-->
+
+        <!--PIXI.loader-->
+            <!--.add("dices.png")-->
+            <!--.add("board.png")-->
+            <!--.add("white.png")-->
+            <!--.add("black.png")-->
+            <!--.load(setup);-->
+    <!--}-->
+
+    <!--function createRouteTile(boardSprite,board,i,x,y,tile_size){-->
+        <!--board[i] = new RouteTile(boardSprite.position.x + x, boardSprite.position.y + y, tile_size, tile_size);-->
+    <!--}-->
+
+    <!--function setup() {-->
+
+        <!--// let game = new Game();-->
+        <!--// let board = new Board();-->
 
 
 
-        app.stage.addChild(boardSprite);
-        rollText.x = 700;
-        rollText.y = 200;
-        dicesTile = new RollTile(675, 150, 120, 50);
-        rollText.interactive = true;
-        rollText.on('pointerdown',function(){dicesTile.onClick();});
-        app.stage.addChild(rollText);
-
-        board = [];
-        tiles = [];
+        <!--let boardSprite = new PIXI.Sprite(PIXI.loader.resources["board.png"].texture);-->
+        <!--boardSprite.position.x = 0;-->
+        <!--boardSprite.position.y = 100;-->
+        <!--let white = PIXI.Texture.fromImage("white.png");-->
+        <!--let black = PIXI.Texture.fromImage("black.png");-->
 
 
-        createRouteTile(boardSprite,board,0, 254, 5, tile_size);
-        createRouteTile(boardSprite,board,1, 180, 5, tile_size);
-        createRouteTile(boardSprite,board,2, 103, 5, tile_size);
-        createRouteTile(boardSprite,board,3, 23, 5, tile_size);
-        createRouteTile(boardSprite,board,4, 254, 159, tile_size);
-        createRouteTile(boardSprite,board,5, 180, 159, tile_size);
-        createRouteTile(boardSprite,board,6, 103, 159, tile_size);
-        createRouteTile(boardSprite,board,7, 23, 159, tile_size);
-        createRouteTile(boardSprite,board,8, 23, 83, tile_size);
-        createRouteTile(boardSprite,board,9, 103, 83, tile_size);
-        createRouteTile(boardSprite,board,10, 180, 83, tile_size);
-        createRouteTile(boardSprite,board,11, 254, 83, tile_size);
-        createRouteTile(boardSprite,board,12, 330, 83, tile_size);
-        createRouteTile(boardSprite,board,13, 405, 83, tile_size);
-        createRouteTile(boardSprite,board,14, 485, 83, tile_size);
-        createRouteTile(boardSprite,board,15, 560, 83, tile_size);
-        createRouteTile(boardSprite,board,16, 560, 5, tile_size);
-        createRouteTile(boardSprite,board,17, 485, 5, tile_size);
-        createRouteTile(boardSprite,board,18, 560, 159, tile_size);
-        createRouteTile(boardSprite,board,19, 485, 159, tile_size);
 
-        for(let i in rosettes){
-            board[rosettes[i]].isRosette = true;
-        }
+        <!--app.stage.addChild(boardSprite);-->
+        <!--rollText.x = 700;-->
+        <!--rollText.y = 200;-->
+        <!--dicesTile = new RollTile(675, 150, 120, 50);-->
+        <!--rollText.interactive = true;-->
+        <!--rollText.on('pointerdown',function(){dicesTile.onClick();});-->
+        <!--app.stage.addChild(rollText);-->
 
-        for (let tile of board) {
-            tiles.push(tile);
-        }
-
-        var autoRollPlayer1Div = $("#AutoRollPlayer1Div");
-        var autoRollPlayer2Div = $("#AutoRollPlayer2Div");
+        <!--board = [];-->
+        <!--tiles = [];-->
 
 
-        switch ($('input[name="gameMode"]:checked').val()) {
-            case "PvP":
-                players[0] = new Player(0, 'Biały');
-                autoRollPlayer1Div.show();
-                players[1] = new Player(1, 'Czarny');
-                autoRollPlayer2Div.show();
-                break;
-            case "PvC":
-                if($('input[name="humanColor"]:checked').val()==='white'){
-                    players[0] = new Player(0, 'Biały');
-                    autoRollPlayer1Div.show();
-                    players[1] = new ComputerPlayer(1, 'Czarny');
-                }
-                else{
-                    players[0] = new ComputerPlayer(0, 'Biały');
-                    players[1] = new Player(1, 'Czarny');
-                    autoRollPlayer2Div.show();
-                }
-                break;
-            case "CvC":
-                players[0] = new ComputerPlayer(0, 'Biały');
-                players[1] = new ComputerPlayer(1, 'Czarny');
-                break;
-            
-        }
+        <!--createRouteTile(boardSprite,board,0, 254, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,1, 180, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,2, 103, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,3, 23, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,4, 254, 159, tile_size);-->
+        <!--createRouteTile(boardSprite,board,5, 180, 159, tile_size);-->
+        <!--createRouteTile(boardSprite,board,6, 103, 159, tile_size);-->
+        <!--createRouteTile(boardSprite,board,7, 23, 159, tile_size);-->
+        <!--createRouteTile(boardSprite,board,8, 23, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,9, 103, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,10, 180, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,11, 254, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,12, 330, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,13, 405, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,14, 485, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,15, 560, 83, tile_size);-->
+        <!--createRouteTile(boardSprite,board,16, 560, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,17, 485, 5, tile_size);-->
+        <!--createRouteTile(boardSprite,board,18, 560, 159, tile_size);-->
+        <!--createRouteTile(boardSprite,board,19, 485, 159, tile_size);-->
 
-        
-        players[0].BeginTile = new BeginTile(100, 0, 200, boardSprite.position.y);
-        players[0].EndTile = new EndTile(500, 0, 200, boardSprite.position.y, players[0]);
-        players[0].Route = route[0];
-        tiles.push(players[0].BeginTile);
-        tiles.push(players[0].EndTile);
-        for (let i = 0; i < pawnNumber; i++) {
-            let sprite = new PIXI.Sprite(white);
-            app.stage.addChild(sprite);
-            let pawn = new Pawn(players[0], sprite,board);
-            pawn.tile = players[0].BeginTile;
-            players[0].pawns.push(pawn);
-            players[0].BeginTile.pawns.push(pawn);
-            players[0].BeginTile.setPawnDestination(pawn);
-            pawn.sprite.x = pawn.destinationX;
-            pawn.sprite.y = pawn.destinationY;
-        }
+        <!--for(let i in rosettes){-->
+            <!--board[rosettes[i]].isRosette = true;-->
+        <!--}-->
 
-        players[1].BeginTile = new BeginTile(100, boardSprite.y + boardSprite.height, 200, boardSprite.y);
-        players[1].EndTile = new EndTile(500, boardSprite.y + boardSprite.height, 200, boardSprite.y, players[1]);
-        players[1].Route = route[1];
-        tiles.push(players[1].BeginTile);
-        tiles.push(players[1].EndTile);
-        for (let i = 0; i < pawnNumber; i++) {
-            let sprite = new PIXI.Sprite(black);
-            app.stage.addChild(sprite);
-            let pawn = new Pawn(players[1], sprite,board);
-            pawn.tile = players[1].BeginTile;
-            players[1].pawns.push(pawn);
-            players[1].BeginTile.pawns.push(pawn);
-            players[1].BeginTile.setPawnDestination(pawn);
-            pawn.sprite.x = pawn.destinationX;
-            pawn.sprite.y = pawn.destinationY;
-        }
-        // for (let tile of tiles) {
-        //     tile.draw();
-        // }
+        <!--for (let tile of board) {-->
+            <!--tiles.push(tile);-->
+        <!--}-->
+
+        <!--var autoRollPlayer1Div = $("#AutoRollPlayer1Div");-->
+        <!--var autoRollPlayer2Div = $("#AutoRollPlayer2Div");-->
 
 
-        setCurrentPlayer(0);
+        <!--switch ($('input[name="gameMode"]:checked').val()) {-->
+            <!--case "PvP":-->
+                <!--players[0] = new Player(0, 'Biały');-->
+                <!--autoRollPlayer1Div.show();-->
+                <!--players[1] = new Player(1, 'Czarny');-->
+                <!--autoRollPlayer2Div.show();-->
+                <!--break;-->
+            <!--case "PvC":-->
+                <!--if($('input[name="humanColor"]:checked').val()==='white'){-->
+                    <!--players[0] = new Player(0, 'Biały');-->
+                    <!--autoRollPlayer1Div.show();-->
+                    <!--players[1] = new ComputerPlayer(1, 'Czarny');-->
+                <!--}-->
+                <!--else{-->
+                    <!--players[0] = new ComputerPlayer(0, 'Biały');-->
+                    <!--players[1] = new Player(1, 'Czarny');-->
+                    <!--autoRollPlayer2Div.show();-->
+                <!--}-->
+                <!--break;-->
+            <!--case "CvC":-->
+                <!--players[0] = new ComputerPlayer(0, 'Biały');-->
+                <!--players[1] = new ComputerPlayer(1, 'Czarny');-->
+                <!--break;-->
+            <!---->
+        <!--}-->
 
-        function onKeyDown(key) {
-            if(key.keyCode === 32){
-                dicesTile.onClick();
-            }
-        }
+        <!---->
+        <!--players[0].BeginTile = new BeginTile(100, 0, 200, boardSprite.position.y);-->
+        <!--players[0].EndTile = new EndTile(500, 0, 200, boardSprite.position.y, players[0]);-->
+        <!--players[0].Route = route[0];-->
+        <!--tiles.push(players[0].BeginTile);-->
+        <!--tiles.push(players[0].EndTile);-->
+        <!--for (let i = 0; i < pawnNumber; i++) {-->
+            <!--let sprite = new PIXI.Sprite(white);-->
+            <!--app.stage.addChild(sprite);-->
+            <!--let pawn = new Pawn(players[0], sprite,board);-->
+            <!--pawn.tile = players[0].BeginTile;-->
+            <!--players[0].pawns.push(pawn);-->
+            <!--players[0].BeginTile.pawns.push(pawn);-->
+            <!--players[0].BeginTile.setPawnDestination(pawn);-->
+            <!--pawn.sprite.x = pawn.destinationX;-->
+            <!--pawn.sprite.y = pawn.destinationY;-->
+        <!--}-->
 
-        document.addEventListener('keydown', onKeyDown);
+        <!--players[1].BeginTile = new BeginTile(100, boardSprite.y + boardSprite.height, 200, boardSprite.y);-->
+        <!--players[1].EndTile = new EndTile(500, boardSprite.y + boardSprite.height, 200, boardSprite.y, players[1]);-->
+        <!--players[1].Route = route[1];-->
+        <!--tiles.push(players[1].BeginTile);-->
+        <!--tiles.push(players[1].EndTile);-->
+        <!--for (let i = 0; i < pawnNumber; i++) {-->
+            <!--let sprite = new PIXI.Sprite(black);-->
+            <!--app.stage.addChild(sprite);-->
+            <!--let pawn = new Pawn(players[1], sprite,board);-->
+            <!--pawn.tile = players[1].BeginTile;-->
+            <!--players[1].pawns.push(pawn);-->
+            <!--players[1].BeginTile.pawns.push(pawn);-->
+            <!--players[1].BeginTile.setPawnDestination(pawn);-->
+            <!--pawn.sprite.x = pawn.destinationX;-->
+            <!--pawn.sprite.y = pawn.destinationY;-->
+        <!--}-->
+        <!--// for (let tile of tiles) {-->
+        <!--//     tile.draw();-->
+        <!--// }-->
 
-    }
 
-</script>
+        <!--setCurrentPlayer(0);-->
+
+        <!--function onKeyDown(key) {-->
+            <!--if(key.keyCode === 32){-->
+                <!--dicesTile.onClick();-->
+            <!--}-->
+        <!--}-->
+
+        <!--document.addEventListener('keydown', onKeyDown);-->
+
+    <!--}-->
+
+<!--</script>-->
 
 </body>
 </html>

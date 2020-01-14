@@ -24,3 +24,12 @@ body {
   background: gold;
   width: 50px;
 }
+
+.button {
+  border: solid;
+  border-color: black;
+  background-color: gold;
+  color: black;
+  user-select: none;
+  display: inline-block;
+}

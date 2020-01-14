@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ToguzBoard from './ToguzKorgool/ToguzKorgool.jsx';
-import {AI,Toguz} from './ToguzKorgool/ToguzKorgool.js';
 import Ur from './Ur/Ur';
 import TamiAdventure from './TamiAdventure/TamiAdventure';
 import './index.css';
+import LotteryMachine from "./LotteryMachine/LotteryMachine";
 
 class Game extends React.Component {
     state = {
@@ -24,6 +24,10 @@ class Game extends React.Component {
             {
                 name:TamiAdventure,
                 displayName:"Przygody Tamisia"
+            },
+            {
+                name:LotteryMachine,
+                displayName:"Maszyna losująca"
             }
         ]
     };
@@ -38,6 +42,7 @@ class Game extends React.Component {
         const TagName = this.state.currentGame.name;
         return (
             <div className="game">
+                <div onClick={() => this.setState({currentGame: null})}>Powrót do początku</div>
                 <TagName />
             </div>
         );
@@ -53,27 +58,3 @@ class Game extends React.Component {
 
 ReactDOM.render(<Game />, document.getElementById('root'));
 
-for(let ai1 of [AI.random,AI.bestCapture,AI.keepMostBalls]){
-    for(let ai2 of [AI.random,AI.bestCapture,AI.keepMostBalls]){
-
-        let playerOneWins = 0;
-        let playerTwoWins = 0;
-//console.time('testPlay');
-
-        for(let i=0;i<2000;i++){
-            let toguzTest = new Toguz(ai1,ai2);
-            let winner = toguzTest.testPlay();
-            if(winner !== null){
-                if(winner.id === 0){
-                    playerOneWins += 1;
-                }
-                else{
-                    playerTwoWins += 1;
-                }
-            }
-        }
-//console.timeEnd('testPlay');
-        console.log(ai1.name, ai2.name ,playerOneWins,playerTwoWins);
-    }
-
-}
