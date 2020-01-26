@@ -27,13 +27,33 @@ export default class ToguzBoard extends React.Component {
 
     // Handle User Events
     handleHoleClick(p,i) {
-        console.log(p,i);
+
         let balls = this.state.currentPlayer.holes[i];
         if(p !== this.state.currentPlayer.id || balls === 0){
             return;
         }
         this.state.currentPlayer.moveBalls(i);
-        this.setState({currentPlayer:this.game.currentPlayer.opponent});
+
+        this.unMarkAllCells();
+        this.setState({currentPlayer:this.game.players[(p+1)%2]});
+    }
+
+    markCell(id){
+        this.refs[id].style.borderColor = "red";
+    }
+    unMarkCell(id){
+        this.refs[id].style.borderColor = "black";
+    }
+    unMarkAllCells(){
+        for(var p in this.game.players){
+            for(var nr in this.game.players[p].holes){
+                this.unMarkCell(p + "_" + nr);
+            }
+        }
+    }
+    showCurrentPlayerMark(){
+        this.refs[this.game.currentPlayer.id].style.display = "inline-block";
+        this.refs[this.game.currentPlayer.opponent.id].style.display = "none";
     }
 
     renderHole(playerID, nr){
@@ -44,17 +64,29 @@ export default class ToguzBoard extends React.Component {
                      style={this.state.currentPlayer.id !== playerID || this.game.players[playerID].holes[nr].balls === 0 ? this.holeStyleInactive : this.holeStyleActive}
                      onClick={() => this.handleHoleClick(playerID,nr)}
                      onPointerOver={() => {
-                         let nextHole = nr + this.game.players[playerID].holes[nr].balls;
+                         if(this.game.players[playerID].holes[nr].balls === 0){
+                             return;
+                         }
+                         let nextHole = nr + this.game.players[playerID].holes[nr].balls-1;
+                         if(this.game.players[playerID].holes[nr].balls === 1){
+                             nextHole = nr + 1;
+                         }
                          let nextPlayerID = (playerID + parseInt(nextHole/9))%2;
                          nextHole = nextHole%9;
-                         this.refs[nextPlayerID + "_" + nextHole].style.borderColor = "red";
+                         this.markCell(nextPlayerID + "_" + nextHole);
                      }
                      }
                      onPointerLeave={() => {
-                         let nextHole = nr + this.game.players[playerID].holes[nr].balls;
+                         if(this.game.players[playerID].holes[nr].balls === 0){
+                             return;
+                         }
+                         let nextHole = nr + this.game.players[playerID].holes[nr].balls-1;
+                         if(this.game.players[playerID].holes[nr].balls === 1){
+                             nextHole = nr + 1;
+                         }
                          let nextPlayerID = (playerID + parseInt(nextHole/9))%2;
                          nextHole = nextHole%9;
-                         this.refs[nextPlayerID + "_" + nextHole].style.borderColor = "initial";
+                         this.unMarkCell(nextPlayerID + "_" + nextHole);
                      }
                      }
                 >{this.game.players[playerID].holes[nr].balls}</div>
@@ -79,12 +111,14 @@ export default class ToguzBoard extends React.Component {
     renderBoard() {
         return (
             <div>
-                <div>
+                <div key={"upperLine"} ref={"upperLine"}>
+                    <div key={"turn_"+0} ref={"turn_"+0}>\></div>
                     {
                         this.renderUpperLine()
                     }
                 </div>
-                <div>
+                <div key={"bottomLine"} ref={"bottomLine"}>
+                    <div key={"turn_"+1} ref={"turn_"+1}>\></div>
                     {
                         this.renderBottomLine()
                     }

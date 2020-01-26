@@ -23,7 +23,10 @@ body {
 .hole{
   background: gold;
   width: 50px;
+  user-select: none;
+  cursor: pointer;
 }
+
 
 .button {
   border: solid;
@@ -32,4 +35,6 @@ body {
   color: black;
   user-select: none;
   display: inline-block;
+  margin: 5px;
+  cursor: pointer;
 }

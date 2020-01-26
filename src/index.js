@@ -33,7 +33,7 @@ class Game extends React.Component {
     };
     renderChooseGame(){
         return this.state.availableGames.map((game) => {
-                return <div onClick={() => this.setState({currentGame: game})}>{game.displayName}</div>
+                return <div onClick={() => this.setState({currentGame: game})} className={"button"}>{game.displayName}</div>
             }
         )
     }
@@ -42,7 +42,7 @@ class Game extends React.Component {
         const TagName = this.state.currentGame.name;
         return (
             <div className="game">
-                <div onClick={() => this.setState({currentGame: null})}>Powrót do początku</div>
+                <div onClick={() => this.setState({currentGame: null})} className={"button"}>Powrót do początku</div>
                 <TagName />
             </div>
         );
