@@ -5,6 +5,7 @@ export default class ToguzBoard extends React.Component {
     game = new Toguz();
     state = {
         gameFinished: false,
+        winningPlayer: null,
         currentPlayer: this.game.currentPlayer
     };
 
@@ -35,6 +36,7 @@ export default class ToguzBoard extends React.Component {
         this.state.currentPlayer.moveBalls(i);
 
         this.unMarkAllCells();
+        this.checkEndGameConditions();
         this.setState({currentPlayer:this.game.players[(p+1)%2]});
     }
 
@@ -51,9 +53,19 @@ export default class ToguzBoard extends React.Component {
             }
         }
     }
-    showCurrentPlayerMark(){
-        this.refs[this.game.currentPlayer.id].style.display = "inline-block";
-        this.refs[this.game.currentPlayer.opponent.id].style.display = "none";
+
+    checkEndGameConditions(){
+        for(var p in this.game.players){
+            if(this.game.players[p].result > 81 || !this.game.players[p].holes.some(function (e) {
+                return e !== 0;
+            })){
+                this.setState({
+                    gameFinished: true,
+                    winningPlayer: this.game.players[p]
+                });
+                return;
+            }
+        }
     }
 
     renderHole(playerID, nr){
@@ -112,13 +124,13 @@ export default class ToguzBoard extends React.Component {
         return (
             <div>
                 <div key={"upperLine"} ref={"upperLine"}>
-                    <div key={"turn_"+0} ref={"turn_"+0}>\></div>
+                    <div key={"turn_"+0} ref={"turn_"+0}>Gracz: 0</div>
                     {
                         this.renderUpperLine()
                     }
                 </div>
                 <div key={"bottomLine"} ref={"bottomLine"}>
-                    <div key={"turn_"+1} ref={"turn_"+1}>\></div>
+                    <div key={"turn_"+1} ref={"turn_"+1}>Gracz: 1</div>
                     {
                         this.renderBottomLine()
                     }
@@ -128,6 +140,15 @@ export default class ToguzBoard extends React.Component {
     }
 
     render() {
+        if(this.state.gameFinished){
+            return (
+                <div> Wygrał gracz:
+                    {
+                        this.state.winningPlayer.id
+                    }
+                </div>
+            )
+        }
         return (
             <div className="board">
                 <div>Results {this.game.players[0].result} {this.game.players[1].result}</div>
