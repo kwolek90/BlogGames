@@ -34,11 +34,11 @@ class Hole{
     }
 }
 
-function randomScore(move,holes, opponentHoles, result, opponentResult){
+function randomScore(){
     return random.getValue();
 }
 
-function captureBallsScore(move,holes, opponentHoles, result, opponentResult){
+function captureBallsScore(move,holes, opponentHoles){
     let balls = holes[move].balls;
     let newPosition = move + balls + (balls === 1 ? 0 : -1);
     let newHoleNumber = newPosition % 9;
@@ -50,7 +50,7 @@ function captureBallsScore(move,holes, opponentHoles, result, opponentResult){
 }
 
 
-function possesedBallsScore(move,holes, opponentHoles, result, opponentResult){
+function possesedBallsScore(move,holes, opponentHoles){
     let balls = holes[move].balls;
     let newPosition = move + balls + (balls === 1 ? 0 : -1);
     let newHoleNumber = newPosition % 9;
@@ -88,8 +88,8 @@ class Player{
         for(let i=0;i<9;i++){
             this.holes.push(new Hole(id));
         }
-        let timeStamp = new Date().valueOf();
-        this.seed = timeStamp;
+
+        this.seed = new Date().valueOf();
         this.random = new Random(this.seed);
         this.assessMove = chooseMove;
     }
@@ -139,7 +139,7 @@ class Player{
             if (k >= 9) {
                 k -= 9;
                 i -= 9;
-                currentPlayer = this.opponent;
+                currentPlayer = currentPlayer.opponent;
             }
             if(currentPlayer.holes[k] === undefined){
                 console.log(currentPlayer,k,j,i);
@@ -157,7 +157,7 @@ class Player{
                 this.result += currentPlayer.holes[k].balls;
                 currentPlayer.holes[k].balls = 0;
             }
-            else if (k !== 9 && currentPlayer.holes[k].balls === 3 && !this.hasHouse && (this.opponent.housePosition === k)) {
+            else if (k !== 9 && currentPlayer.holes[k].balls === 3 && !this.hasHouse && (this.opponent.housePosition !== k)) {
                 this.housePosition = k;
                 this.opponent.holes[k].isHouse = true;
                 this.opponent.holes[k].owner = this;

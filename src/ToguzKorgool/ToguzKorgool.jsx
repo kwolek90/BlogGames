@@ -9,21 +9,20 @@ export default class ToguzBoard extends React.Component {
         currentPlayer: this.game.currentPlayer
     };
 
-    holeStyleInactive = {
+    holeStyleCommon = {
         minWidth: "50px",
-        background: "white",
         display: "inline-block",
         textAlign: "center",
         border: "solid"
     };
 
+    holeStyleInactive = {
+        background: "white"
+    };
+
 
     holeStyleActive = {
-        minWidth: "50px",
-        background: "gold",
-        display: "inline-block",
-        textAlign: "center",
-        border: "solid"
+        background: "gold"
     };
 
     // Handle User Events
@@ -55,10 +54,25 @@ export default class ToguzBoard extends React.Component {
     }
 
     checkEndGameConditions(){
-        for(var p in this.game.players){
-            if(this.game.players[p].result > 81 || !this.game.players[p].holes.some(function (e) {
+        let gameFinished = false;
+        for(let p in this.game.players){
+            if(!this.game.players[p].holes.some(function (e) {
                 return e !== 0;
             })){
+                gameFinished = true;
+            }
+        }
+        if(gameFinished){
+            for(let p in this.game.players){
+                let player = this.game.players[p];
+                for(let h in player.holes){
+                    player.result += player.holes[h].balls;
+                }
+            }
+        }
+
+        for(var p in this.game.players){
+            if(this.game.players[p].result > 81){
                 this.setState({
                     gameFinished: true,
                     winningPlayer: this.game.players[p]
@@ -73,7 +87,13 @@ export default class ToguzBoard extends React.Component {
                 <div key={playerID + "_" + nr}
                      ref={playerID + "_" + nr}
                      className="hole"
-                     style={this.state.currentPlayer.id !== playerID || this.game.players[playerID].holes[nr].balls === 0 ? this.holeStyleInactive : this.holeStyleActive}
+                     style={
+                         Object.assign(
+                             {},
+                             this.holeStyleCommon,this.state.currentPlayer.id !== playerID || this.game.players[playerID].holes[nr].balls === 0 ? this.holeStyleInactive : this.holeStyleActive,
+                             this.game.players[playerID].holes[nr].isHouse ? {background: "green"} : {}
+                         )
+                     }
                      onClick={() => this.handleHoleClick(playerID,nr)}
                      onPointerOver={() => {
                          if(this.game.players[playerID].holes[nr].balls === 0){
