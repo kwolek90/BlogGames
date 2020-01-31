@@ -43,8 +43,10 @@ function captureBallsScore(move,holes, opponentHoles){
     let newPosition = move + balls + (balls === 1 ? 0 : -1);
     let newHoleNumber = newPosition % 9;
     let newHolePlayer = Math.floor(newPosition/9);
-    if((newHolePlayer % 2) === 1 && (opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0){
-        return opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2;
+    if((newHolePlayer % 2) === 1){
+        if((opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2) % 2 === 0){
+            return opponentHoles[newHoleNumber].balls + (newHolePlayer + 1) / 2;
+        }
     }
     return 0;
 }
@@ -98,7 +100,7 @@ class Player{
         let possibleMoves = [];
         for(let index in this.holes){
             if(this.holes[index].balls > 0){
-                possibleMoves.push(index);
+                possibleMoves.push(parseInt(index));
             }
         }
         return possibleMoves;
@@ -108,7 +110,7 @@ class Player{
         let possibleMoves = this.getPossibleMoves();
         if(possibleMoves.length > 0){
             let bestMove = possibleMoves[0];
-            let bestScore = 0.0.MIN_VALUE;
+            let bestScore = -1000000;
             for(let i in possibleMoves){
                 let move = possibleMoves[i];
                 let score = this.assessMove(move,this.holes, this.opponent.holes, this.result, this.opponent.result);

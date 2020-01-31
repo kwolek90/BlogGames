@@ -1,10 +1,11 @@
 import React from 'react';
-import {Toguz} from "./ToguzKorgool";
+import {Toguz,AI} from "./ToguzKorgool";
 
 export default class ToguzBoard extends React.Component {
     game = new Toguz();
     state = {
         gameFinished: false,
+        gameStarted: false,
         winningPlayer: null,
         currentPlayer: this.game.currentPlayer
     };
@@ -36,7 +37,14 @@ export default class ToguzBoard extends React.Component {
 
         this.unMarkAllCells();
         this.checkEndGameConditions();
-        this.setState({currentPlayer:this.game.players[(p+1)%2]});
+        var nextPlayer = this.game.players[(p+1)%2];
+        if(typeof(nextPlayer.assessMove) == null ){
+            this.setState({currentPlayer:nextPlayer});
+        }
+        else{
+            nextPlayer.makeMove();
+            this.setState({});
+        }
     }
 
     markCell(id){
@@ -71,7 +79,7 @@ export default class ToguzBoard extends React.Component {
             }
         }
 
-        for(var p in this.game.players){
+        for(let p in this.game.players){
             if(this.game.players[p].result > 81){
                 this.setState({
                     gameFinished: true,
@@ -125,6 +133,15 @@ export default class ToguzBoard extends React.Component {
             )
     }
 
+    startPvP(){
+        this.setState({gameStarted:true});
+    }
+
+    startPvC(){
+        this.game.players[1].assessMove = AI.bestCapture;
+        this.setState({gameStarted:true});
+    }
+
     renderUpperLine() {
         return [0,1,2,3,4,5,6,7,8].map((nr) => {
             return (
@@ -169,13 +186,21 @@ export default class ToguzBoard extends React.Component {
                 </div>
             )
         }
+        if(this.state.gameStarted){
+            return (
+                <div className="board">
+                    <div>Results {this.game.players[0].result} {this.game.players[1].result}</div>
+                    {
+                        this.renderBoard()
+                    }
+                </div>
+            );
+        }
         return (
-            <div className="board">
-                <div>Results {this.game.players[0].result} {this.game.players[1].result}</div>
-                {
-                    this.renderBoard()
-                }
+            <div>
+                <div className={"button"} onClick={() => this.startPvP()}>PvP</div>
+                <div className={"button"} onClick={() => this.startPvC()}>PvC</div>
             </div>
-        );
+        )
     }
 }
