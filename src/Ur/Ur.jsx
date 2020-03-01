@@ -6,10 +6,40 @@ import {ComputerPlayer,Player} from './Player.js';
 
 export default class Ur extends React.Component {
 
+    renderTile(l,nr){
+        console.log(l,nr);
+        return (
+            <div style={{display:"inline"}}>
+                {
+                    l+''+nr
+                }
+            </div>
+        );
+    }
+
+    renderLine(l){
+        return ([0,1,2,3,4,5,6,7,8].map((nr) => {
+            return (
+                this.renderTile(l,nr)
+            );
+        }
+        ));
+    }
+
+    renderBoard(){
+        return ([0,1,2].map((l) => {
+                this.renderLine(l);
+            })
+        )
+    }
 
     render(){
         return (
-            <div>Ur</div>
+            <div>Ur
+                {
+                    this.renderBoard()
+                }
+            </div>
         )
     }
 }

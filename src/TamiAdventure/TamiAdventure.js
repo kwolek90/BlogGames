@@ -7,6 +7,7 @@ export default class TamiAdventure extends React.Component {
     state={
         dogLeft: 0,
         isJumping: false,
+        isFalling: false,
         groudLevel: 600,
         currentDogVerticalPosition: 0
     };
@@ -21,6 +22,8 @@ export default class TamiAdventure extends React.Component {
     stageStyle = {
 
     };
+
+
 
 
     componentDidMount(){
@@ -54,31 +57,33 @@ export default class TamiAdventure extends React.Component {
     moveRight(){
         this.setState({dogLeft: this.state.dogLeft + 5});
     }
+
+    update(game){
+        let newState = {
+            isFalling: game.state.isFalling,
+            isJumping: game.state.isJumping,
+            currentDogVerticalPosition: game.state.currentDogVerticalPosition
+        };
+        if(!newState.isJumping){
+            return;
+        }
+        newState.currentDogVerticalPosition+=newState.isFalling?2:-2;
+        if(newState.currentDogVerticalPosition === -300){
+            newState.isFalling = true;
+        }
+        if(newState.isFalling && newState.currentDogVerticalPosition >= 0){
+            newState.currentDogVerticalPosition = 0;
+            newState.isJumping = false;
+            newState.isFalling = false;
+        }
+        if(newState.isFalling || newState.isJumping){
+            setTimeout(function(){game.update(game)},10);
+        }
+        game.setState(newState);
+    }
     jump(){
         this.setState({isJumping: true});
-        const sleep = (milliseconds) => {
-            return new Promise(resolve => setTimeout(resolve, milliseconds))
-        };
-
-        var juh = 0;
-        var isFalling = false;
-
-        const ju = (game) => {
-            juh+=isFalling?2:-2;
-            if(juh === -60){
-                isFalling = true
-            }
-            game.setState({currentDogVerticalPosition: juh });
-            //console.log(Date.now(),juh);
-            if(!isFalling || juh !== 0){
-                sleep(10).then(() => ju(this));
-            }
-            else{
-                game.setState({isJumping: false})
-            }
-        };
-
-        ju(this);
+        this.update(this);
     }
 
     render(){
@@ -94,6 +99,7 @@ export default class TamiAdventure extends React.Component {
             height: "600px",
             position: "absolute"
         };
+
         return (
             <div>
                 <h2>Tami Adventure</h2>
