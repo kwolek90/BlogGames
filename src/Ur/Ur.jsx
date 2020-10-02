@@ -4,23 +4,41 @@ import React from 'react';
 //import {BeginTile,EndTile,RouteTile,RollTile} from './Tiles.jsx';
 //import {ComputerPlayer,Player} from './Player.js';
 
+var rosettes = [
+    [0,0],
+    [2,0],
+    [1,3],
+    [0,6],
+    [2,6]
+]
+
 export default class Ur extends React.Component {
 
 
     renderTile(l,nr){
+        let style = {width:"50px",height:"50px",display:"inline-block"}
+        style.background = "grey";
+        style.border = "solid";
+        if((l===0||l===2)&&(nr===4||nr===5)){
+            style.background = "white";
+            style.border = "none";
+            style.marginLeft = "3px";
+            style.marginRight = "3px";
+        }
+        if(rosettes.some(function(x){ return x[0]===l && x[1]===nr})){
+            style.background = "blue";
+        }
+
+
         return (
-            <div style={{display:"inline-block",width:"50px",height:"50px",background:"grey",border:"1px"}} key={"tile_"+l+"_"+nr}>
-                {
-                    l+''+nr
-                }
-            </div>
+            <div style={style} key={"tile_"+l+"_"+nr}> </div>
         );
     }
 
     renderLine(l){
         return <div key={"line"+l}>
             {
-                [0,1,2,3,4,5,6,7,8].map((nr) => {
+                [0,1,2,3,4,5,6,7].map((nr) => {
                         return (
                             this.renderTile(l,nr)
                         );

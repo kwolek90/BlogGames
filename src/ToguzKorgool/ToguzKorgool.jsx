@@ -56,7 +56,7 @@ export default class ToguzBoard extends React.Component {
     unMarkAllCells(){
         for(let player of this.game.players){
             for(let nr in player.holes){
-                this.unMarkCell(p + "_" + nr);
+                this.unMarkCell(player.id + "_" + nr);
             }
         }
     }
