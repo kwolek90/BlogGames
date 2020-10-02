@@ -18,7 +18,7 @@ export default class LotteryMachine extends React.Component {
     };
 
     rePickLast = () => {
-        let lastElement = this.state.selected.pop();
+        this.state.selected.pop();
         let index = Math.floor(Math.random()*this.notUsedCountries.length)
         let item = this.notUsedCountries[index];
         this.state.selected.push(item.Name);

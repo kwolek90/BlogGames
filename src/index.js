@@ -33,7 +33,7 @@ class Game extends React.Component {
     };
     renderChooseGame(){
         return this.state.availableGames.map((game) => {
-                return <div onClick={() => this.setState({currentGame: game})} className={"button"}>{game.displayName}</div>
+                return <div onClick={() => this.setState({currentGame: game})} className={"button"} key={game.name}>{game.displayName}</div>
             }
         )
     }
@@ -41,7 +41,7 @@ class Game extends React.Component {
     renderGame() {
         const TagName = this.state.currentGame.name;
         return (
-            <div className="game">
+            <div className="game" key={this.state.currentGame.name}>
                 <div onClick={() => this.setState({currentGame: null})} className={"button"}>Powrót do początku</div>
                 <TagName />
             </div>

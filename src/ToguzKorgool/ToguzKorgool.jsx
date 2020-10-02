@@ -37,8 +37,8 @@ export default class ToguzBoard extends React.Component {
 
         this.unMarkAllCells();
         this.checkEndGameConditions();
-        var nextPlayer = this.game.players[(p+1)%2];
-        if(typeof(nextPlayer.assessMove) == null ){
+        let nextPlayer = this.game.players[(p+1)%2];
+        if(nextPlayer.assessMove === undefined ){
             this.setState({currentPlayer:nextPlayer});
         }
         else{
@@ -54,8 +54,8 @@ export default class ToguzBoard extends React.Component {
         this.refs[id].style.borderColor = "black";
     }
     unMarkAllCells(){
-        for(var p in this.game.players){
-            for(var nr in this.game.players[p].holes){
+        for(let player of this.game.players){
+            for(let nr in player.holes){
                 this.unMarkCell(p + "_" + nr);
             }
         }
@@ -63,27 +63,26 @@ export default class ToguzBoard extends React.Component {
 
     checkEndGameConditions(){
         let gameFinished = false;
-        for(let p in this.game.players){
-            if(!this.game.players[p].holes.some(function (e) {
+        for(let player of this.game.players){
+            if(!player.holes.some(function (e) {
                 return e !== 0;
             })){
                 gameFinished = true;
             }
         }
         if(gameFinished){
-            for(let p in this.game.players){
-                let player = this.game.players[p];
-                for(let h in player.holes){
-                    player.result += player.holes[h].balls;
+            for(let player of this.game.players){
+                for(let hole of player.holes){
+                    player.result += hole.balls;
                 }
             }
         }
 
-        for(let p in this.game.players){
-            if(this.game.players[p].result > 81){
+        for(let player of this.game.players){
+            if(player.result > 81){
                 this.setState({
                     gameFinished: true,
-                    winningPlayer: this.game.players[p]
+                    winningPlayer: player
                 });
                 return;
             }

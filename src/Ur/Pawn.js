@@ -1,4 +1,4 @@
-import {AnimationQueue,sign,noAnimations,nextPlayerTurn,currentPlayer,board,Move,endTile,dicesTile} from "./Common.js";
+//import {AnimationQueue,sign,noAnimations,nextPlayerTurn,currentPlayer,board,Move,endTile,dicesTile} from "./Common.js";
 //import {AnimationQueue,sign,noAnimations} from "./Common.js";
 
 export class Pawn {
@@ -21,7 +21,7 @@ export class Pawn {
         this.destinationX = sprite.x;
         this.destinationY = sprite.y;
     }
-    
+
 
     //
     // draw(x, y) {

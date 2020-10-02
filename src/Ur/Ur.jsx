@@ -1,15 +1,15 @@
 import React from 'react';
-import {setCurrentPlayer,AnimationQueue} from './Common.js';
-import {Pawn} from './Pawn.js';
-import {BeginTile,EndTile,RouteTile,RollTile} from './Tiles.js';
-import {ComputerPlayer,Player} from './Player.js';
+//import {setCurrentPlayer,AnimationQueue} from './Common.js';
+//import {Pawn} from './Pawn.js';
+//import {BeginTile,EndTile,RouteTile,RollTile} from './Tiles.jsx';
+//import {ComputerPlayer,Player} from './Player.js';
 
 export default class Ur extends React.Component {
 
+
     renderTile(l,nr){
-        console.log(l,nr);
         return (
-            <div style={{display:"inline"}}>
+            <div style={{display:"inline-block",width:"50px",height:"50px",background:"grey",border:"1px"}} key={"tile_"+l+"_"+nr}>
                 {
                     l+''+nr
                 }
@@ -18,24 +18,35 @@ export default class Ur extends React.Component {
     }
 
     renderLine(l){
-        return ([0,1,2,3,4,5,6,7,8].map((nr) => {
-            return (
-                this.renderTile(l,nr)
-            );
-        }
-        ));
+        return <div key={"line"+l}>
+            {
+                [0,1,2,3,4,5,6,7,8].map((nr) => {
+                        return (
+                            this.renderTile(l,nr)
+                        );
+                    }
+                )
+            }
+        </div>
     }
 
     renderBoard(){
-        return ([0,1,2].map((l) => {
-                this.renderLine(l);
-            })
-        )
+        return <div key={"board"}>
+            Board
+            {
+                [0,1,2].map((l) => {
+                    return (
+                        this.renderLine(l)
+                    )
+                })
+
+            }
+        </div>
     }
 
     render(){
         return (
-            <div>Ur
+            <div key={"game"}>Ur
                 {
                     this.renderBoard()
                 }
